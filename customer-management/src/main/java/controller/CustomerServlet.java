@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "UserServlet", urlPatterns = "/customers")
+@WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
 public class CustomerServlet extends HttpServlet {
     private CustomerDAO customerDAO;
     public void init() {
@@ -81,7 +81,7 @@ public class CustomerServlet extends HttpServlet {
             throws SQLException, IOException, ServletException {
         List<Customer> listCustomer = customerDAO.findAll();
         request.setAttribute("listCustomer", listCustomer);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -90,7 +90,7 @@ public class CustomerServlet extends HttpServlet {
         String searchName = request.getParameter("searchName");
         List<Customer> listCustomerByName = customerDAO.selectByName(searchName);
         request.setAttribute("listCustomer", listCustomerByName);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -99,7 +99,7 @@ public class CustomerServlet extends HttpServlet {
         int rankID = Integer.parseInt(request.getParameter("rankID"));
         List<Customer> listCustomerByRank = customerDAO.selectByRank(rankID);
         request.setAttribute("listCustomer", listCustomerByRank);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -141,12 +141,11 @@ public class CustomerServlet extends HttpServlet {
         int order = Integer.parseInt(request.getParameter("order"));
         double amount = Double.parseDouble(request.getParameter("amount"));
         int rankID = Integer.parseInt(request.getParameter("rankID"));
-        boolean admin = Boolean.parseBoolean(request.getParameter("admin"));
-        Customer newCustomer = new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID, admin);
+        Customer newCustomer = new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID);
         customerDAO.add(newCustomer);
         List<Customer> listCustomer = customerDAO.findAll();
         request.setAttribute("listCustomer", listCustomer);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -164,12 +163,11 @@ public class CustomerServlet extends HttpServlet {
         int order = Integer.parseInt(request.getParameter("order"));
         double amount = Double.parseDouble(request.getParameter("amount"));
         int rankID = Integer.parseInt(request.getParameter("rankID"));
-        boolean admin = Boolean.parseBoolean(request.getParameter("admin"));
-        Customer customer = new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID, admin);
+        Customer customer = new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID);
         customerDAO.update(customer);
         List<Customer> listCustomer = customerDAO.findAll();
         request.setAttribute("listCustomer", listCustomer);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -180,7 +178,7 @@ public class CustomerServlet extends HttpServlet {
         customerDAO.delete(customer);
         List<Customer> listCustomer = customerDAO.findAll();
         request.setAttribute("listCustomer", listCustomer);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
         dispatcher.forward(request, response);
     }
 }

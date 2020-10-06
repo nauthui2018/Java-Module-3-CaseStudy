@@ -13,11 +13,10 @@ public class Customer {
     private int order = 0;
     private double amount = 0;
     private int rankID;
-    private boolean admin = false;
 
     public Customer() {}
 
-    public Customer(int id, String name, String firstName, boolean gender, String dob, String mobile, String address, String email, int provinceID, int order, double amount, int rankID, boolean admin) {
+    public Customer(int id, String name, String firstName, boolean gender, String dob, String mobile, String address, String email, int provinceID, int order, double amount, int rankID) {
         this.id = id;
         this.name = name;
         this.firstName = firstName;
@@ -30,7 +29,6 @@ public class Customer {
         this.order = order;
         this.amount = amount;
         this.rankID = rankID;
-        this.admin = admin;
     }
 
     public int getId() {
@@ -81,10 +79,6 @@ public class Customer {
         return rankID;
     }
 
-    public boolean isAdmin() {
-        return admin;
-    }
-
     public void setId(int id) {
         this.id = id;
     }
@@ -131,9 +125,5 @@ public class Customer {
 
     public void setRankID(int rankID) {
         this.rankID = rankID;
-    }
-
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
     }
 }

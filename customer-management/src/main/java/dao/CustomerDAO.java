@@ -35,8 +35,7 @@ public class CustomerDAO implements ICustomerDAO {
                 int order = rs.getInt("order");
                 double amount = rs.getDouble("amount");
                 int rankID = rs.getInt("rankID");
-                boolean admin = rs.getBoolean("admin");
-                customers.add(new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID, admin));
+                customers.add(new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID));
             }
         } catch (SQLException e) {
             helper.printSQLException(e);
@@ -46,7 +45,7 @@ public class CustomerDAO implements ICustomerDAO {
 
     @Override
     public void add(Customer customer) {
-        String query = "{CALL add_new_customer(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String query = "{CALL add_new_customer(?,?,?,?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
             callableStatement.setInt(1, customer.getId());
@@ -61,7 +60,6 @@ public class CustomerDAO implements ICustomerDAO {
             callableStatement.setInt(10, customer.getOrder());
             callableStatement.setDouble(11, customer.getAmount());
             callableStatement.setInt(12, customer.getRankID());
-            callableStatement.setBoolean(13, customer.isAdmin());
             callableStatement.executeUpdate();
         } catch (SQLException e) {
             helper.printSQLException(e);
@@ -86,7 +84,7 @@ public class CustomerDAO implements ICustomerDAO {
     @Override
     public boolean update(Customer customer) {
         boolean rowUpdated = false;
-        String query = "{CALL update_customer(?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+        String query = "{CALL update_customer(?,?,?,?,?,?,?,?,?,?,?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
             callableStatement.setInt(1, customer.getId());
@@ -101,7 +99,6 @@ public class CustomerDAO implements ICustomerDAO {
             callableStatement.setInt(10, customer.getOrder());
             callableStatement.setDouble(11, customer.getAmount());
             callableStatement.setInt(12, customer.getRankID());
-            callableStatement.setBoolean(13, customer.isAdmin());
             callableStatement.executeUpdate();
             rowUpdated = callableStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -131,8 +128,7 @@ public class CustomerDAO implements ICustomerDAO {
                 int order = rs.getInt("order");
                 double amount = rs.getDouble("amount");
                 int rankID = rs.getInt("rankID");
-                boolean admin = rs.getBoolean("admin");
-                customer = new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID, admin);
+                customer = new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID);
             }
         } catch (SQLException e) {
             helper.printSQLException(e);
@@ -161,8 +157,7 @@ public class CustomerDAO implements ICustomerDAO {
                 int order = rs.getInt("order");
                 double amount = rs.getDouble("amount");
                 int rankID = rs.getInt("rankID");
-                boolean admin = rs.getBoolean("admin");
-                customers.add(new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID, admin));
+                customers.add(new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID));
             }
         } catch (SQLException e) {
             helper.printSQLException(e);
@@ -191,8 +186,7 @@ public class CustomerDAO implements ICustomerDAO {
                 int order = rs.getInt("order");
                 double amount = rs.getDouble("amount");
                 rankID = rs.getInt("rankID");
-                boolean admin = rs.getBoolean("admin");
-                customers.add(new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID, admin));
+                customers.add(new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID));
             }
         } catch (SQLException e) {
             helper.printSQLException(e);
