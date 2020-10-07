@@ -20,10 +20,10 @@ public class ProvinceDAO implements BaseDAO<Province> {
              CallableStatement callableStatement = connection.prepareCall(query);) {
             ResultSet rs = callableStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                String code = rs.getString("code");
-                provinces.add(new Province(id, name, code));
+                int provinceID = rs.getInt("provinceID");
+                String provinceName = rs.getString("provinceName");
+                String provinceCode = rs.getString("provinceCode");
+                provinces.add(new Province(provinceID, provinceName, provinceCode));
             }
         } catch (SQLException e) {
             helper.printSQLException(e);
@@ -33,12 +33,11 @@ public class ProvinceDAO implements BaseDAO<Province> {
 
     @Override
     public void add(Province province) {
-        String query = "{CALL add_new_province(?,?,?)}";
+        String query = "{CALL add_new_province(?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setInt(1, province.getId());
-            callableStatement.setString(2, province.getName());
-            callableStatement.setString(3, province.getCode());
+            callableStatement.setString(1, province.getProvinceName());
+            callableStatement.setString(2, province.getProvinceCode());
             callableStatement.executeUpdate();
         } catch (SQLException e) {
             helper.printSQLException(e);
@@ -51,7 +50,7 @@ public class ProvinceDAO implements BaseDAO<Province> {
         boolean rowDeleted = false;
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setInt(1, province.getId());
+            callableStatement.setInt(1, province.getProvinceID());
             callableStatement.executeUpdate();
             rowDeleted = callableStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -66,9 +65,9 @@ public class ProvinceDAO implements BaseDAO<Province> {
         String query = "{CALL update_province(?,?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setInt(1, province.getId());
-            callableStatement.setString(2, province.getName());
-            callableStatement.setString(3, province.getCode());
+            callableStatement.setInt(1, province.getProvinceID());
+            callableStatement.setString(2, province.getProvinceName());
+            callableStatement.setString(3, province.getProvinceCode());
             callableStatement.executeUpdate();
             rowUpdated = callableStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -78,18 +77,18 @@ public class ProvinceDAO implements BaseDAO<Province> {
     }
 
     @Override
-    public Province selectById(int id) {
+    public Province selectById(int provinceID) {
         Province province = null;
         String query = "{CALL get_province_by_id(?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setInt(1, id);
+            callableStatement.setInt(1, provinceID);
             ResultSet rs = callableStatement.executeQuery();
             while (rs.next()) {
-                id = rs.getInt("id");
-                String name = rs.getString("name");
-                String code = rs.getString("code");
-                province = new Province(id, name, code);
+                provinceID = rs.getInt("provinceID");
+                String provinceName = rs.getString("provinceName");
+                String provinceCode = rs.getString("provinceCode");
+                province = new Province(provinceID, provinceName, provinceCode);
             }
         } catch (SQLException e) {
             helper.printSQLException(e);

@@ -3,50 +3,50 @@ package model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-    String username;
-    String password;
+    String userUsername;
+    String userPassword;
     int customerID;
-    boolean admin;
+    boolean userAdmin;
 
     public User() {
     }
 
-    public User(String username, String password, int customerID, boolean admin) {
-        this.username = username;
-        this.password = password;
+    public User(String userUsername, String userPassword, int customerID, boolean userAdmin) {
+        this.userUsername = userUsername;
+        this.userPassword = userPassword;
         this.customerID = customerID;
-        this.admin = admin;
+        this.userAdmin = userAdmin;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserUsername() {
+        return userUsername;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserPassword() {
+        return userPassword;
     }
 
     public int getCustomerID() {
         return customerID;
     }
 
-    public boolean isAdmin() {
-        return admin;
+    public boolean isUserAdmin() {
+        return userAdmin;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserUsername(String userUsername) {
+        this.userUsername = userUsername;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     public void setCustomerID(int customerID) {
         this.customerID = customerID;
     }
 
-    public void setAdmin(boolean admin) {
-        this.admin = admin;
+    public void setUserAdmin(boolean userAdmin) {
+        this.userAdmin = userAdmin;
     }
 }

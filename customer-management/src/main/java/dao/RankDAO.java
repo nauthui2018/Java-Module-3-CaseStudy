@@ -20,9 +20,9 @@ public class RankDAO implements BaseDAO<Rank> {
              CallableStatement callableStatement = connection.prepareCall(query);) {
             ResultSet rs = callableStatement.executeQuery();
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                ranks.add(new Rank(id, name));
+                int rankID = rs.getInt("rankID");
+                String rankName = rs.getString("rankName");
+                ranks.add(new Rank(rankID, rankName));
             }
         } catch (SQLException e) {
             helper.printSQLException(e);
@@ -32,11 +32,10 @@ public class RankDAO implements BaseDAO<Rank> {
 
     @Override
     public void add(Rank rank) {
-        String query = "{CALL add_new_rank(?,?)}";
+        String query = "{CALL add_new_rank(?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setInt(1, rank.getId());
-            callableStatement.setString(2, rank.getName());
+            callableStatement.setString(1, rank.getRankName());
             callableStatement.executeUpdate();
         } catch (SQLException e) {
             helper.printSQLException(e);
@@ -49,7 +48,7 @@ public class RankDAO implements BaseDAO<Rank> {
         boolean rowDeleted = false;
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setInt(1, rank.getId());
+            callableStatement.setInt(1, rank.getRankID());
             callableStatement.executeUpdate();
             rowDeleted = callableStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -64,8 +63,8 @@ public class RankDAO implements BaseDAO<Rank> {
         String query = "{CALL update_rank(?,?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setInt(1, rank.getId());
-            callableStatement.setString(2, rank.getName());
+            callableStatement.setInt(1, rank.getRankID());
+            callableStatement.setString(2, rank.getRankName());
             callableStatement.executeUpdate();
             rowUpdated = callableStatement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -75,17 +74,17 @@ public class RankDAO implements BaseDAO<Rank> {
     }
 
     @Override
-    public Rank selectById(int id) {
+    public Rank selectById(int rankID) {
         Rank rank = null;
         String query = "{CALL get_rank_by_id(?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
-            callableStatement.setInt(1, id);
+            callableStatement.setInt(1, rankID);
             ResultSet rs = callableStatement.executeQuery();
             while (rs.next()) {
-                id = rs.getInt("id");
-                String name = rs.getString("name");
-                rank = new Rank(id, name);
+                rankID = rs.getInt("rankID");
+                String rankName = rs.getString("rankName");
+                rank = new Rank(rankID, rankName);
             }
         } catch (SQLException e) {
             helper.printSQLException(e);

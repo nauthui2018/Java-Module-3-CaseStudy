@@ -1,8 +1,8 @@
 package model;
 
 public class Customer {
-    private int id;
-    private String name;
+    private int customerID;
+    private String lastName;
     private String firstName;
     private boolean gender;
     private String dob;
@@ -10,15 +10,15 @@ public class Customer {
     private String address;
     private String email;
     private int provinceID;
-    private int order = 0;
-    private double amount = 0;
+    private int totalOrders = 0;
+    private double totalAmounts = 0;
     private int rankID;
 
     public Customer() {}
 
-    public Customer(int id, String name, String firstName, boolean gender, String dob, String mobile, String address, String email, int provinceID, int order, double amount, int rankID) {
-        this.id = id;
-        this.name = name;
+    public Customer(int customerID, String lastName, String firstName, boolean gender, String dob, String mobile, String address, String email, int provinceID, int totalOrders, double totalAmounts, int rankID) {
+        this.customerID = customerID;
+        this.lastName = lastName;
         this.firstName = firstName;
         this.gender = gender;
         this.dob = dob;
@@ -26,17 +26,17 @@ public class Customer {
         this.address = address;
         this.email = email;
         this.provinceID = provinceID;
-        this.order = order;
-        this.amount = amount;
+        this.totalOrders = totalOrders;
+        this.totalAmounts = totalAmounts;
         this.rankID = rankID;
     }
 
-    public int getId() {
-        return id;
+    public int getCustomerID() {
+        return customerID;
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
     }
 
     public String getFirstName() {
@@ -67,24 +67,24 @@ public class Customer {
         return provinceID;
     }
 
-    public int getOrder() {
-        return order;
+    public int getTotalOrders() {
+        return totalOrders;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getTotalAmounts() {
+        return totalAmounts;
     }
 
     public int getRankID() {
         return rankID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setFirstName(String firstName) {
@@ -115,12 +115,12 @@ public class Customer {
         this.provinceID = provinceID;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setTotalOrders(int totalOrders) {
+        this.totalOrders = totalOrders;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
+    public void setTotalAmounts(double totalAmounts) {
+        this.totalAmounts = totalAmounts;
     }
 
     public void setRankID(int rankID) {

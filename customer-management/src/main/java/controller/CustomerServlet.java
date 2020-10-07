@@ -1,7 +1,9 @@
 package controller;
 
 import dao.CustomerDAO;
+import dao.RankDAO;
 import model.Customer;
+import model.Rank;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,10 +17,8 @@ import java.util.List;
 
 @WebServlet(name = "CustomerServlet", urlPatterns = "/customers")
 public class CustomerServlet extends HttpServlet {
-    private CustomerDAO customerDAO;
-    public void init() {
-        customerDAO = new CustomerDAO();
-    }
+    private CustomerDAO customerDAO = new CustomerDAO();
+    private RankDAO rankDAO = new RankDAO();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -111,8 +111,8 @@ public class CustomerServlet extends HttpServlet {
 
     private void showUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Customer customer = customerDAO.selectById(id);
+        int customerID = Integer.parseInt(request.getParameter("customerID"));
+        Customer customer = customerDAO.selectById(customerID);
         RequestDispatcher dispatcher = request.getRequestDispatcher("customer/update.jsp");
         request.setAttribute("customer", customer);
         dispatcher.forward(request, response);
@@ -120,8 +120,8 @@ public class CustomerServlet extends HttpServlet {
 
     private void showDeleteForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Customer customer = customerDAO.selectById(id);
+        int customerID = Integer.parseInt(request.getParameter("customerID"));
+        Customer customer = customerDAO.selectById(customerID);
         RequestDispatcher dispatcher = request.getRequestDispatcher("customer/delete.jsp");
         request.setAttribute("customer", customer);
         dispatcher.forward(request, response);
@@ -129,8 +129,8 @@ public class CustomerServlet extends HttpServlet {
 
     private void addNewCustomer(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
+        int customerID = Integer.parseInt(request.getParameter("customerID"));
+        String lastName = request.getParameter("lastName");
         String firstName = request.getParameter("firstName");
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
         String dob = request.getParameter("dob");
@@ -138,10 +138,10 @@ public class CustomerServlet extends HttpServlet {
         String address = request.getParameter("address");
         String email = request.getParameter("email");
         int provinceID = Integer.parseInt(request.getParameter("provinceID"));
-        int order = Integer.parseInt(request.getParameter("order"));
-        double amount = Double.parseDouble(request.getParameter("amount"));
+        int totalOrders = Integer.parseInt(request.getParameter("totalOrders"));
+        double totalAmounts = Double.parseDouble(request.getParameter("totalAmounts"));
         int rankID = Integer.parseInt(request.getParameter("rankID"));
-        Customer newCustomer = new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID);
+        Customer newCustomer = new Customer(customerID, lastName, firstName, gender, dob, mobile, address, email, provinceID, totalOrders, totalAmounts, rankID);
         customerDAO.add(newCustomer);
         List<Customer> listCustomer = customerDAO.findAll();
         request.setAttribute("listCustomer", listCustomer);
@@ -151,8 +151,8 @@ public class CustomerServlet extends HttpServlet {
 
     private void updateCustomer(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
+        int customerID = Integer.parseInt(request.getParameter("customerID"));
+        String lastName = request.getParameter("lastName");
         String firstName = request.getParameter("firstName");
         boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
         String dob = request.getParameter("dob");
@@ -160,10 +160,10 @@ public class CustomerServlet extends HttpServlet {
         String address = request.getParameter("address");
         String email = request.getParameter("email");
         int provinceID = Integer.parseInt(request.getParameter("provinceID"));
-        int order = Integer.parseInt(request.getParameter("order"));
-        double amount = Double.parseDouble(request.getParameter("amount"));
+        int totalOrders = Integer.parseInt(request.getParameter("totalOrders"));
+        double totalAmounts = Double.parseDouble(request.getParameter("totalAmounts"));
         int rankID = Integer.parseInt(request.getParameter("rankID"));
-        Customer customer = new Customer(id, name, firstName, gender, dob, mobile, address, email, provinceID, order, amount, rankID);
+        Customer customer = new Customer(customerID, lastName, firstName, gender, dob, mobile, address, email, provinceID, totalOrders, totalAmounts, rankID);
         customerDAO.update(customer);
         List<Customer> listCustomer = customerDAO.findAll();
         request.setAttribute("listCustomer", listCustomer);
@@ -173,8 +173,8 @@ public class CustomerServlet extends HttpServlet {
 
     private void deleteCustomer(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Customer customer = customerDAO.selectById(id);
+        int customerID = Integer.parseInt(request.getParameter("customerID"));
+        Customer customer = customerDAO.selectById(customerID);
         customerDAO.delete(customer);
         List<Customer> listCustomer = customerDAO.findAll();
         request.setAttribute("listCustomer", listCustomer);

@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "ProvinceServlet")
+@WebServlet(name = "ProvinceServlet", urlPatterns = "/provinces")
 public class ProvinceServlet extends HttpServlet {
     private ProvinceDAO provinceDAO;
     public void init() {
@@ -87,8 +87,8 @@ public class ProvinceServlet extends HttpServlet {
 
     private void showUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Province province = provinceDAO.selectById(id);
+        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        Province province = provinceDAO.selectById(provinceID);
         RequestDispatcher dispatcher = request.getRequestDispatcher("province/update.jsp");
         request.setAttribute("province", province);
         dispatcher.forward(request, response);
@@ -96,8 +96,8 @@ public class ProvinceServlet extends HttpServlet {
 
     private void showDeleteForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Province province = provinceDAO.selectById(id);
+        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        Province province = provinceDAO.selectById(provinceID);
         RequestDispatcher dispatcher = request.getRequestDispatcher("province/delete.jsp");
         request.setAttribute("province", province);
         dispatcher.forward(request, response);
@@ -105,10 +105,10 @@ public class ProvinceServlet extends HttpServlet {
 
     private void addNewProvince(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        String code = request.getParameter("code");
-        Province province = new Province(id, name, code);
+        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        String provinceName = request.getParameter("provinceName");
+        String provinceCode = request.getParameter("provinceCode");
+        Province province = new Province(provinceID, provinceName, provinceCode);
         provinceDAO.add(province);
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);
@@ -118,10 +118,10 @@ public class ProvinceServlet extends HttpServlet {
 
     private void updateProvince(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        String code = request.getParameter("code");
-        Province province = new Province(id, name, code);
+        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        String provinceName = request.getParameter("provinceName");
+        String provinceCode = request.getParameter("provinceCode");
+        Province province = new Province(provinceID, provinceName, provinceCode);
         provinceDAO.update(province);
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);
@@ -131,8 +131,8 @@ public class ProvinceServlet extends HttpServlet {
 
     private void deleteProvince(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Province province = provinceDAO.selectById(id);
+        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        Province province = provinceDAO.selectById(provinceID);
         provinceDAO.delete(province);
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);

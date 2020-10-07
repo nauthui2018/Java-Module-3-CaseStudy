@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-@WebServlet(name = "RankServlet")
+@WebServlet(name = "RankServlet", urlPatterns = "/ranks")
 public class RankServlet extends HttpServlet {
     private RankDAO rankDAO;
     public void init() {
@@ -87,8 +87,8 @@ public class RankServlet extends HttpServlet {
 
     private void showUpdateForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Rank rank = rankDAO.selectById(id);
+        int rankID = Integer.parseInt(request.getParameter("rankID"));
+        Rank rank = rankDAO.selectById(rankID);
         RequestDispatcher dispatcher = request.getRequestDispatcher("rank/update.jsp");
         request.setAttribute("rank", rank);
         dispatcher.forward(request, response);
@@ -96,8 +96,8 @@ public class RankServlet extends HttpServlet {
 
     private void showDeleteForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Rank rank = rankDAO.selectById(id);
+        int rankID = Integer.parseInt(request.getParameter("rankID"));
+        Rank rank = rankDAO.selectById(rankID);
         RequestDispatcher dispatcher = request.getRequestDispatcher("rank/delete.jsp");
         request.setAttribute("rank", rank);
         dispatcher.forward(request, response);
@@ -105,9 +105,9 @@ public class RankServlet extends HttpServlet {
 
     private void addNewRank(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        Rank rank = new Rank(id, name);
+        int rankID = Integer.parseInt(request.getParameter("rankID"));
+        String rankName = request.getParameter("rankName");
+        Rank rank = new Rank(rankID, rankName);
         rankDAO.add(rank);
         List<Rank> listRank = rankDAO.findAll();
         request.setAttribute("listRank", listRank);
@@ -117,9 +117,9 @@ public class RankServlet extends HttpServlet {
 
     private void updateRank(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        String name = request.getParameter("name");
-        Rank rank = new Rank(id, name);
+        int rankID = Integer.parseInt(request.getParameter("rankID"));
+        String rankName = request.getParameter("rankName");
+        Rank rank = new Rank(rankID, rankName);
         rankDAO.update(rank);
         List<Rank> listRank = rankDAO.findAll();
         request.setAttribute("listRank", listRank);
@@ -129,8 +129,8 @@ public class RankServlet extends HttpServlet {
 
     private void deleteRank(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int id = Integer.parseInt(request.getParameter("id"));
-        Rank rank = rankDAO.selectById(id);
+        int rankID = Integer.parseInt(request.getParameter("rankID"));
+        Rank rank = rankDAO.selectById(rankID);
         rankDAO.delete(rank);
         List<Rank> listRank = rankDAO.findAll();
         request.setAttribute("listRank", listRank);

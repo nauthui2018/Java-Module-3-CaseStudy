@@ -3,46 +3,46 @@ package model;
 import java.util.List;
 
 public class Province {
-    private int id;
-    private String name;
-    private String code;
+    private int provinceID;
+    private String provinceName;
+    private String provinceCode;
     private List<Customer> customers;
 
     public Province() {
     }
 
-    public Province(int id, String name, String code) {
-        this.id = id;
-        this.name = name;
-        this.code = code;
+    public Province(int provinceID, String provinceName, String provinceCode) {
+        this.provinceID = provinceID;
+        this.provinceName = provinceName;
+        this.provinceCode = provinceCode;
     }
 
-    public int getId() {
-        return id;
+    public int getProvinceID() {
+        return provinceID;
     }
 
-    public String getCode() {
-        return code;
+    public String getProvinceCode() {
+        return provinceCode;
     }
 
-    public String getName() {
-        return name;
+    public String getProvinceName() {
+        return provinceName;
     }
 
     public List<Customer> getCustomers() {
         return customers;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProvinceName(String provinceName) {
+        this.provinceName = provinceName;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setProvinceID(int provinceID) {
+        this.provinceID = provinceID;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode;
     }
 
     public void setCustomers(List<Customer> customers) {

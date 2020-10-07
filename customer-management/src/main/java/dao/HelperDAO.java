@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class HelperDAO {
     Connection connection;
-    private String jdbcURL = "jdbc:mysql://localhost:3306/demo?useEncoding=true&characterEncoding=UTF-8";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/customers?useEncoding=true&characterEncoding=UTF-8";
     private String jdbcUsername = "root";
     private String jdbcPassword = "samthui7";
 
