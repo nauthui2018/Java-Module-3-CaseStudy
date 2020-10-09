@@ -77,7 +77,7 @@
                         </a>
                     </li>
                     <li class="has-sub">
-                        <a class="js-arrow" href="${pageContext.request.contextPath}/users">
+                        <a class="js-arrow" href="${pageContext.request.contextPath}/users?action=list">
                             <i class="fas fa-table"></i>Users
                         </a>
                     </li>
@@ -101,9 +101,10 @@
                         </div>
                         <div class="header-button2">
                             <div class="header-button-item js-item-menu">
-                                <form action="" method="post">
-                                    <input style="width: 20vw; border-bottom: white solid 1px; background: none; font-size: medium; " type="text" name="search" placeholder="Search here...">
-                                    <i class="button" style="font-size: medium"></i><i class="zmdi zmdi-search ml-2"></i>
+                                <form id="myForm" action="${pageContext.request.contextPath}/customers?action=searchName" method="post">
+                                    <input style="width: 20vw; border-bottom: white solid 1px; background: none; font-size: medium;" type="text" name="searchName" placeholder="Search here..." value="${requestScope["searchName"]}">
+                                    <button type="submit" class="btn btn-outline-light" onclick="document.getElementById('myForm').submit();">
+                                        <i class="fas fa-search"></i></button>
                                 </form>
                             </div>
                             <div class="header-button-item has-noti js-item-menu">
@@ -154,8 +155,11 @@
                                             <i class="zmdi zmdi-account"></i>Account</a>
                                     </div>
                                     <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-settings"></i>Logout</a>
+                                        <form action="/users?action=logout" method="post">
+                                            <input value="${requestScope["userUsername"]}" type="hidden" name="userUsername">
+                                            <button type="submit" style="border: none; background: none">
+                                                <i class="fas fa-sign-out-alt mr-1"></i>Logout</button>
+                                        </form>
                                     </div>
                                     <div class="account-dropdown__item">
                                         <a href="#">
@@ -193,7 +197,7 @@
                             </a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow" href="${pageContext.request.contextPath}/users">
+                            <a class="js-arrow" href="${pageContext.request.contextPath}/users?action=list">
                                 <i class="fas fa-table"></i>Users
                             </a>
                         </li>
@@ -211,19 +215,15 @@
                         <div class="col-sm-12">
                             <div class="au-breadcrumb-content">
                                 <div class="au-breadcrumb-left">
-                                    <span class="au-breadcrumb-span">You are here:</span>
-                                    <ul class="list-unstyled list-inline au-breadcrumb__list">
-                                        <li class="list-inline-item active">
-                                            <a href="#">Home</a>
-                                        </li>
-                                        <li class="list-inline-item seprate">
-                                            <span>/</span>
-                                        </li>
-                                        <li class="list-inline-item">Dashboard</li>
-                                    </ul>
+                                    <a href="${pageContext.request.contextPath}/customers">All Customers</a>
                                 </div>
-                                <a class="au-btn au-btn-icon au-btn--green" href="${pageContext.request.contextPath}/products?action=add">
-                                <i class="zmdi zmdi-plus"></i> ADD ITEM</a>
+                                <p>
+                                    <c:if test='${requestScope["message"] != null}'>
+                                        <span class="message" style="color: blue; font-size: larger">${requestScope["message"]}</span>
+                                    </c:if>
+                                </p>
+                                <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customers?action=add">
+                                <i class="zmdi zmdi-plus"></i> Add New Customer</a>
 
                             </div>
                         </div>
@@ -244,34 +244,40 @@
                                     <thead>
                                     <tr>
                                         <th>Name
-                                            <a href="${pageContext.request.contextPath}/products?action=sortByName">
-                                                <i class="fa fa-sort ml-2"></i></a>
+                                            <a href="${pageContext.request.contextPath}/customers?action=sortByName">
+                                                <i class="fa fa-sort ml-1"></i></a>
                                         </th>
                                         <th>Mobile</th>
                                         <th>Email</th>
-                                        <th>Total Amounts
-                                            <a href="${pageContext.request.contextPath}/products?action=sortByAmount">
-                                                <i class="fa fa-sort ml-2"></i></a>
+                                        <th>Amounts
+                                            <a href="${pageContext.request.contextPath}/customers?action=sortByAmount">
+                                                <i class="fa fa-sort ml-1"></i></a>
                                         </th>
                                         <th>Rank
-                                            <a href="${pageContext.request.contextPath}/products?action=sortByRank">
-                                                <i class="fa fa-sort ml-2"></i></a>
+                                            <a href="${pageContext.request.contextPath}/customers?action=sortByRank">
+                                                <i class="fa fa-sort ml-1"></i></a>
                                         </th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <c:forEach var="item" items="${listCustomer}">
+                                    <c:forEach var="customer" items="${listCustomer}">
                                         <tr>
-                                            <td>${item.firstName} ${item.lastName}</td>
-                                            <td><c:out value="${item.mobile}"/></td>
-                                            <td><c:out value="${item.email}"/></td>
-                                            <td><c:out value="${item.totalAmounts}"/></td>
-                                            <td><c:out value="${item.rankID}"/></td>
+                                            <td>${customer.firstName} ${customer.lastName}</td>
+                                            <td><c:out value="${customer.mobile}"/></td>
+                                            <td><c:out value="${customer.email}"/></td>
+                                            <td><c:out value="${customer.totalAmounts}"/></td>
                                             <td>
-                                                <a href="/customers?action=update&id=${item.customerID}"><i class="zmdi zmdi-eye" style="color: blue" title="View"></i></a>
-                                                <a href="/customers?action=update&id=${item.customerID}"><i class="zmdi zmdi-edit ml-3" style="color: green" title="Edit"></i></a>
-                                                <a href="/customers?action=delete&id=${item.customerID}"><i class="zmdi zmdi-delete ml-3" style="color: red" title="Delete"></i></a>
+                                                <c:forEach items="${listRank}" var="rank">
+                                                    <c:if test="${rank.rankID==customer.getRankID()}">
+                                                        ${rank.rankName}
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
+                                            <td>
+                                                <a href="/customers?action=view&customerID=${customer.customerID}"><i class="zmdi zmdi-eye" style="color: blue" title="View"></i></a>
+                                                <a href="/customers?action=update&customerID=${customer.customerID}"><i class="zmdi zmdi-edit ml-2" style="color: green" title="Edit"></i></a>
+                                                <a href="/customers?action=delete&customerID=${customer.customerID}"><i class="zmdi zmdi-delete ml-2" style="color: red" title="Delete"></i></a>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -284,7 +290,6 @@
                 </div>
             </div>
         </section>
-
         <section>
             <div class="container-fluid">
                 <div class="row">

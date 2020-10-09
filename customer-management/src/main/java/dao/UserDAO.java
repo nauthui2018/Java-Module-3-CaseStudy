@@ -66,6 +66,18 @@ public class UserDAO implements BaseDAO<User> {
         return users;
     }
 
+    public boolean checkUsername(String username) {
+        List<User> users = findAll();
+        boolean isExisted = false;
+        for (User item: users) {
+            if (item.getUserUsername().equals(username)) {
+                isExisted = true;
+                break;
+            }
+        }
+        return isExisted;
+    }
+
     @Override
     public void add(User user) {
         String query = "{CALL add_new_user(?,?,?,?)}";

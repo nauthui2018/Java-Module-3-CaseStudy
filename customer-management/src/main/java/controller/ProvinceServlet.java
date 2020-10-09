@@ -75,7 +75,7 @@ public class ProvinceServlet extends HttpServlet {
             throws SQLException, IOException, ServletException {
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -112,7 +112,7 @@ public class ProvinceServlet extends HttpServlet {
         provinceDAO.add(province);
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -125,7 +125,7 @@ public class ProvinceServlet extends HttpServlet {
         provinceDAO.update(province);
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -136,7 +136,7 @@ public class ProvinceServlet extends HttpServlet {
         provinceDAO.delete(province);
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listRank.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
         dispatcher.forward(request, response);
     }
 }

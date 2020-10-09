@@ -1,8 +1,12 @@
 package controller;
 
 import dao.CustomerDAO;
+import dao.ProvinceDAO;
+import dao.RankDAO;
 import dao.UserDAO;
 import model.Customer;
+import model.Province;
+import model.Rank;
 import model.User;
 
 import javax.servlet.RequestDispatcher;
@@ -19,6 +23,8 @@ import java.util.List;
 public class UserServlet extends HttpServlet {
     private UserDAO userDAO = new UserDAO();
     private CustomerDAO customerDAO = new CustomerDAO();
+    private RankDAO rankDAO = new RankDAO();
+    private ProvinceDAO provinceDAO = new ProvinceDAO();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -29,17 +35,23 @@ public class UserServlet extends HttpServlet {
         }
         try {
             switch (action) {
-                case "add":
+                case "register":
                     registerUser(request, response);
+                    break;
+                case "add":
+                    addUser(request, response);
                     break;
                 case "update":
                     updatePassword(request, response);
                     break;
-                case "delete":
-                    deleteUser(request, response);
-                    break;
                 case "login":
                     login(request, response);
+                    break;
+                case "logout":
+                    logout(request, response);
+                    break;
+                case "showLoginForm":
+                    showLoginForm(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -56,20 +68,20 @@ public class UserServlet extends HttpServlet {
         }
         try {
             switch (action) {
-                case "login":
-                    showLoginForm(request, response);
-                    break;
-                case "add":
+                case "register":
                     showRegisterForm(request, response);
                     break;
                 case "update":
                     showUpdatePasswordForm(request, response);
                     break;
-                case "delete":
-                    showDeleteForm(request, response);
+                case "view":
+                    view(request, response);
+                    break;
+                case "list":
+                    listUsers(request, response);
                     break;
                 default:
-                    listUsers(request, response);
+                    showHomepage(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -77,10 +89,29 @@ public class UserServlet extends HttpServlet {
         }
     }
 
+    private void showHomepage(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        request.setAttribute("buttonName", "Login");
+        request.setAttribute("actionName", "showLoginForm");
+        request.setAttribute("iconLogin", "fas fa-user");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void view(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/view.jsp");
+        dispatcher.forward(request, response);
+    }
+
     private void listUsers(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         List<User> listUser = userDAO.findAll();
         request.setAttribute("listUser", listUser);
+        List<Customer> listCustomer = customerDAO.findAll();
+        request.setAttribute("listCustomer", listCustomer);
+        List<Rank> listRank = rankDAO.findAll();
+        request.setAttribute("listRank", listRank);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/listUser.jsp");
         dispatcher.forward(request, response);
     }
@@ -101,17 +132,8 @@ public class UserServlet extends HttpServlet {
             throws SQLException, ServletException, IOException {
         String userUsername = request.getParameter("userUsername");
         User user = userDAO.selectByUsername(userUsername);
+        request.setAttribute("user", user);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/update.jsp");
-        request.setAttribute("user", user);
-        dispatcher.forward(request, response);
-    }
-
-    private void showDeleteForm(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, ServletException, IOException {
-        String userUsername = request.getParameter("userUsername");
-        User user = userDAO.selectByUsername(userUsername);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/delete.jsp");
-        request.setAttribute("user", user);
         dispatcher.forward(request, response);
     }
 
@@ -119,20 +141,45 @@ public class UserServlet extends HttpServlet {
             throws SQLException, IOException, ServletException {
         String userUsername = request.getParameter("userUsername");
         String userPassword = request.getParameter("userPassword");
-        //in case customer ID is existed
-        int customerID = Integer.parseInt(request.getParameter("customerID"));
-        User user = new User(userUsername, userPassword, customerID, false);
+        request.setAttribute("userUsername", userUsername);
+        request.setAttribute("userPassword", userPassword);
         RequestDispatcher dispatcher;
-        if (userDAO.selectByUsername(userUsername) != null) {
-            userDAO.add(user);
-            List<User> listUser = userDAO.findAll();
-            request.setAttribute("listUser", listUser);
-            request.setAttribute("message", "Register successful!");
-            dispatcher = request.getRequestDispatcher("user/listUser.jsp");
-        } else {
-            request.setAttribute("message", "Username is existed!");
+        if (userDAO.checkUsername(userUsername)) {
+            request.setAttribute("message", "This username is existed. Please try other username!");
             dispatcher = request.getRequestDispatcher("user/register.jsp");
+        } else {
+            List<Province> listProvince = provinceDAO.findAll();
+            request.setAttribute("listProvince", listProvince);
+            dispatcher = request.getRequestDispatcher("user/add.jsp");
         }
+        dispatcher.forward(request, response);
+    }
+
+    private void addUser(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        String lastName = request.getParameter("lastName");
+        String firstName = request.getParameter("firstName");
+        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+        String dob = request.getParameter("dob");
+        String mobile = request.getParameter("mobile");
+        String address = request.getParameter("address");
+        String email = request.getParameter("email");
+        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        int totalOrders = Integer.parseInt(request.getParameter("totalOrders"));
+        double totalAmounts = Double.parseDouble(request.getParameter("totalAmounts"));
+        int rankID = Integer.parseInt(request.getParameter("rankID"));
+        Customer newCustomer = new Customer(lastName, firstName, gender, dob, mobile, address, email, provinceID, totalOrders, totalAmounts, rankID);
+        customerDAO.add(newCustomer);
+        String userUsername = request.getParameter("userUsername");
+        String userPassword = request.getParameter("userPassword");
+        Customer customer = customerDAO.getNewCustomer();
+        User user = new User(userUsername, userPassword, customer.getCustomerID(), false);
+        userDAO.add(user);
+        request.setAttribute("userUsername", userUsername);
+        request.setAttribute("buttonName", "Logout");
+        request.setAttribute("iconLogin", "fas fa-sign-out-alt");
+        request.setAttribute("status", "logout");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -147,13 +194,36 @@ public class UserServlet extends HttpServlet {
             if (user.isUserAdmin()) {
                 List<Customer> listCustomer = customerDAO.findAll();
                 request.setAttribute("listCustomer", listCustomer);
+                request.setAttribute("userUsername", userUsername);
                 dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
             } else {
-                dispatcher = request.getRequestDispatcher("www.google.com");
+                request.setAttribute("userUsername", userUsername);
+                request.setAttribute("buttonName", "Logout");
+                request.setAttribute("iconLogin", "fas fa-sign-out-alt");
+                request.setAttribute("status", "logout");
+                dispatcher = request.getRequestDispatcher("home.jsp");
             }
         } else {
+            request.setAttribute("userUsername", userUsername);
             request.setAttribute("message", "Incorrect username or password. Please try again!");
-            dispatcher = request.getRequestDispatcher("rank/login.jsp");
+            dispatcher = request.getRequestDispatcher("user/login.jsp");
+        }
+        dispatcher.forward(request, response);
+    }
+
+    private void logout(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        String userUsername = request.getParameter("userUsername");
+        User user = userDAO.selectByUsername(userUsername);
+        RequestDispatcher dispatcher;
+        if (user.isUserAdmin()) {
+            dispatcher = request.getRequestDispatcher("user/login.jsp");
+        } else {
+            request.setAttribute("userUsername", "");
+            request.setAttribute("buttonName", "Login");
+            request.setAttribute("status", "login");
+            request.setAttribute("iconLogin", "fas fa-user");
+            dispatcher = request.getRequestDispatcher("home.jsp");
         }
         dispatcher.forward(request, response);
     }
@@ -174,20 +244,12 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("listCustomer", listCustomer);
             dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
         } else {
-            dispatcher = request.getRequestDispatcher("www.google.com");
+            dispatcher = request.getRequestDispatcher("home.jsp");
         }
         dispatcher.forward(request, response);
     }
 
-    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
-        String userUsername = request.getParameter("userUsername");
-        User user = userDAO.selectByUsername(userUsername);
-        userDAO.delete(user);
-        List<User> listUser = userDAO.findAll();
-        request.setAttribute("listUser", listUser);
-        request.setAttribute("message", "Register successful!");
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/listUser.jsp");
-        dispatcher.forward(request, response);
+    private void resetForm() {
+        String message = "";
     }
 }

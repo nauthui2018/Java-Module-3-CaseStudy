@@ -55,29 +55,34 @@
                         </a>
                     </div>
                     <div class="login-form">
-                        <form action="" method="post">
+                        <form action="${pageContext.request.contextPath}/users?action=login" method="post">
                             <div class="form-group">
-                                <label>Email Address</label>
-                                <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                                <label>Username</label>
+                                <input value="${requestScope["userUsername"]}" class="au-input au-input--full" type="text" name="userUsername" placeholder="Username" required>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                                <input value="${requestScope["userPassword"]}" class="au-input au-input--full" type="password" name="userPassword" placeholder="Password" required>
                             </div>
-                            <div class="login-checkbox">
-                                <label>
-                                    <input type="checkbox" name="remember">Remember Me
-                                </label>
-                                <label>
-                                    <a href="#">Forgotten Password?</a>
-                                </label>
-                            </div>
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                            <label class="message">
+                                <c:if test='${requestScope["message"] != null}'>
+                                    <span class="message" style="color: red; font-size: smaller">${requestScope["message"]}</span>
+                                </c:if>
+                            </label>
+<%--                            <div class="login-checkbox">--%>
+<%--                                <label>--%>
+<%--                                    <input type="checkbox" name="remember">Remember Me--%>
+<%--                                </label>--%>
+<%--                                <label>--%>
+<%--                                    <a href="#">Forgotten Password?</a>--%>
+<%--                                </label>--%>
+<%--                            </div>--%>
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Sign In</button>
                         </form>
                         <div class="register-link">
                             <p>
                                 Don't you have account?
-                                <a href="#">Sign Up Here</a>
+                                <a href="/users?action=register" style="color: blue">Sign Up Here</a>
                             </p>
                         </div>
                     </div>

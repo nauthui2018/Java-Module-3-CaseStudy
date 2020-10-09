@@ -55,36 +55,31 @@
                         </a>
                     </div>
                     <div class="login-form">
-                        <form action="" method="post">
+                        <form action="users?action=register" method="post">
                             <div class="form-group">
                                 <label>Username</label>
-                                <input class="au-input au-input--full" type="text" name="username" placeholder="Username">
-                            </div>
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                                <input value="${requestScope["userUsername"]}" class="au-input au-input--full" type="text" name="userUsername" placeholder="Username" required>
+                                <label>
+                                    <c:if test='${requestScope["message"] != null}'>
+                                        <span class="message" style="color: red; font-size: smaller">${requestScope["message"]}</span>
+                                    </c:if>
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
-                                <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                                <input class="au-input au-input--full" type="password" name="userPassword" placeholder="Password" required>
                             </div>
-                            <div class="login-checkbox">
-                                <label>
-                                    <input type="checkbox" name="aggree">Agree the terms and policy
-                                </label>
-                            </div>
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">register</button>
-                            <div class="social-login-content">
-                                <div class="social-button">
-                                    <button class="au-btn au-btn--block au-btn--blue m-b-20">register with facebook</button>
-                                    <button class="au-btn au-btn--block au-btn--blue2">register with twitter</button>
-                                </div>
-                            </div>
+<%--                            <div class="login-checkbox">--%>
+<%--                                <label>--%>
+<%--                                    <input type="checkbox" name="aggree">Agree the terms and policy--%>
+<%--                                </label>--%>
+<%--                            </div>--%>
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Next</button>
                         </form>
-                        <div class="register-link">
+                        <div class="login-link">
                             <p>
                                 Already have account?
-                                <a href="#">Sign In</a>
+                                <a href="${pageContext.request.contextPath}/users?action=login" >Sign In</a>
                             </p>
                         </div>
                     </div>

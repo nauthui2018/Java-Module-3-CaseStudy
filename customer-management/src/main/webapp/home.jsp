@@ -28,7 +28,13 @@
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About Us</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="javascript:;"><input id="search" type="text" placeholder="Search here" style="color: #ffffff;"> <img class="fa fa-search"></a></li>
-                <li class="nav-item "><a class="nav-link js-scroll-trigger" href="/user/login.jsp"> Login <img class="fa fa-user"></a></li>
+                <form action="/users?action=${requestScope["actionName"]}" method="post">
+                    <li class="nav-item ">
+                        <input value="${requestScope["userUsername"]}" type="hidden" name="userUsername">
+                        <a style="color: white">${requestScope["userUsername"]}</a>
+                        <button type="submit" style="border: none; background: none; color: white">
+                            ${requestScope["buttonName"]}  <i class="${requestScope["iconLogin"]} ml-1"></i></button>
+                </form>
             </ul>
         </div>
     </div>

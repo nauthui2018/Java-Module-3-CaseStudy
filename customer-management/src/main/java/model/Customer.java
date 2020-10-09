@@ -31,6 +31,20 @@ public class Customer {
         this.rankID = rankID;
     }
 
+    public Customer(String lastName, String firstName, boolean gender, String dob, String mobile, String address, String email, int provinceID, int totalOrders, double totalAmounts, int rankID) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.gender = gender;
+        this.dob = dob;
+        this.mobile = mobile;
+        this.address = address;
+        this.email = email;
+        this.provinceID = provinceID;
+        this.totalOrders = totalOrders;
+        this.totalAmounts = totalAmounts;
+        this.rankID = rankID;
+    }
+
     public int getCustomerID() {
         return customerID;
     }
@@ -45,6 +59,14 @@ public class Customer {
 
     public boolean isGender() {
         return gender;
+    }
+
+    public String viewGender() {
+        if (this.isGender()) {
+            return "Male";
+        } else {
+            return "Female";
+        }
     }
 
     public String getDob() {

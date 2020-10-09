@@ -192,4 +192,31 @@ public class CustomerDAO implements ICustomerDAO {
         }
         return customers;
     }
+
+    public Customer getNewCustomer() {
+        Customer customer = null;
+        String query = "{CALL get_new_customer()}";
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String lastName = rs.getString("lastName");
+                String firstName = rs.getString("firstName");
+                boolean gender = rs.getBoolean("gender");
+                String dob = rs.getString("dob");
+                String mobile = rs.getString("mobile");
+                String address = rs.getString("address");
+                String email = rs.getString("email");
+                int provinceID = rs.getInt("provinceID");
+                int totalOrders = rs.getInt("totalOrders");
+                double totalAmounts = rs.getDouble("totalAmounts");
+                int rankID = rs.getInt("rankID");
+                customer = new Customer(customerID, lastName, firstName, gender, dob, mobile, address, email, provinceID, totalOrders, totalAmounts, rankID);
+            }
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return customer;
+    }
 }
