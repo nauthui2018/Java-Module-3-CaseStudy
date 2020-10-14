@@ -15,8 +15,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet(name = "UserServlet", urlPatterns = "/users")
@@ -41,8 +43,11 @@ public class UserServlet extends HttpServlet {
                 case "add":
                     addUser(request, response);
                     break;
-                case "update":
+                case "updatePassword":
                     updatePassword(request, response);
+                    break;
+                case "updateInformation":
+                    updateInformation(request, response);
                     break;
                 case "login":
                     login(request, response);
@@ -52,6 +57,9 @@ public class UserServlet extends HttpServlet {
                     break;
                 case "showLoginForm":
                     showLoginForm(request, response);
+                    break;
+                case "view":
+                    view(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -71,11 +79,11 @@ public class UserServlet extends HttpServlet {
                 case "register":
                     showRegisterForm(request, response);
                     break;
-                case "update":
+                case "updatePassword":
                     showUpdatePasswordForm(request, response);
                     break;
-                case "view":
-                    view(request, response);
+                case "updateInformation":
+                    showUpdateInformationForm(request, response);
                     break;
                 case "list":
                     listUsers(request, response);
@@ -91,15 +99,78 @@ public class UserServlet extends HttpServlet {
 
     private void showHomepage(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        request.setAttribute("buttonName", "Login");
-        request.setAttribute("actionName", "showLoginForm");
-        request.setAttribute("iconLogin", "fas fa-user");
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            User user = (User)session.getAttribute("user");
+            request.setAttribute("userUsername", user.getUserUsername());
+            request.setAttribute("buttonName", "Logout");
+            request.setAttribute("iconName", "fas fa-sign-out-alt");
+            request.setAttribute("actionName", "logout");
+        } else {
+            request.setAttribute("buttonName", "Login");
+            request.setAttribute("actionName", "showLoginForm");
+            request.setAttribute("iconName", "fas fa-user");
+        }
         RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
         dispatcher.forward(request, response);
     }
 
+    private void showLoginForm(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/login.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void login(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        String userUsername = request.getParameter("userUsername");
+        String userPassword = request.getParameter("userPassword");
+        User user = userDAO.login(userUsername, userPassword);
+        RequestDispatcher dispatcher;
+        if (userDAO.login(userUsername, userPassword) != null) {
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+            if (user.isUserAdmin()) {
+                List<Customer> listCustomer = customerDAO.findAll();
+                request.setAttribute("listCustomer", listCustomer);
+                List<Rank> listRank = rankDAO.findAll();
+                request.setAttribute("listRank", listRank);
+                List<Province> listProvince = provinceDAO.findAll();
+                request.setAttribute("listProvince", listProvince);
+                dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
+            } else {
+                request.setAttribute("userUsername", userUsername);
+                request.setAttribute("buttonName", "Logout");
+                request.setAttribute("iconName", "fas fa-sign-out-alt");
+                request.setAttribute("actionName", "logout");
+                request.setAttribute("message", "Welcome back");
+                dispatcher = request.getRequestDispatcher("home.jsp");
+            }
+        } else {
+            request.setAttribute("userUsername", userUsername);
+            request.setAttribute("message", "Incorrect username or password. Please try again!");
+            dispatcher = request.getRequestDispatcher("user?action=showLoginForm");
+        }
+        dispatcher.forward(request, response);
+    }
     private void view(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
+        HttpSession session = request.getSession(false);
+        User user = (User)session.getAttribute("user");
+        request.setAttribute("user", user);
+        Customer customer = customerDAO.selectById(user.getCustomerID());
+        request.setAttribute("customer", customer);
+        Province province = provinceDAO.selectById(customer.getProvinceID());
+        request.setAttribute("province", province);
+        Rank rank = rankDAO.selectById(customer.getRankID());
+        request.setAttribute("rank", rank);
+        String action;
+        if (user.isUserAdmin()) {
+            action = "/customers";
+        } else {
+            action = "/users";
+        }
+        request.setAttribute("action", action);
         RequestDispatcher dispatcher = request.getRequestDispatcher("user/view.jsp");
         dispatcher.forward(request, response);
     }
@@ -116,24 +187,9 @@ public class UserServlet extends HttpServlet {
         dispatcher.forward(request, response);
     }
 
-    private void showLoginForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/login.jsp");
-        dispatcher.forward(request, response);
-    }
-
     private void showRegisterForm(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/register.jsp");
-        dispatcher.forward(request, response);
-    }
-
-    private void showUpdatePasswordForm(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, ServletException, IOException {
-        String userUsername = request.getParameter("userUsername");
-        User user = userDAO.selectByUsername(userUsername);
-        request.setAttribute("user", user);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("user/update.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/register.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -175,81 +231,115 @@ public class UserServlet extends HttpServlet {
         Customer customer = customerDAO.getNewCustomer();
         User user = new User(userUsername, userPassword, customer.getCustomerID(), false);
         userDAO.add(user);
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
         request.setAttribute("userUsername", userUsername);
         request.setAttribute("buttonName", "Logout");
-        request.setAttribute("iconLogin", "fas fa-sign-out-alt");
-        request.setAttribute("status", "logout");
+        request.setAttribute("iconName", "fas fa-sign-out-alt");
+        request.setAttribute("actionName", "logout");
         RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void login(HttpServletRequest request, HttpServletResponse response)
+    private void showUpdatePasswordForm(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        request.setAttribute("user", user);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/updatePassword.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void updatePassword(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        String userUsername = request.getParameter("userUsername");
-        String userPassword = request.getParameter("userPassword");
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        String userUsername = user.getUserUsername();
+        String currentPassword = request.getParameter("currentPassword");
+        String newPassword = request.getParameter("newPassword");
         RequestDispatcher dispatcher;
-        if (userDAO.login(userUsername, userPassword)) {
-            User user = userDAO.selectByUsername(userUsername);
-            request.setAttribute("message", "Welcome back");
-            if (user.isUserAdmin()) {
+        if (userDAO.login(userUsername, currentPassword) != null) {
+            User newUser = new User(userUsername, newPassword, user.getCustomerID(), user.isUserAdmin());
+            userDAO.update(newUser);
+            session.setAttribute("user", newUser);
+            request.setAttribute("message", "Password is changed");
+            if (newUser.isUserAdmin()) {
                 List<Customer> listCustomer = customerDAO.findAll();
                 request.setAttribute("listCustomer", listCustomer);
-                request.setAttribute("userUsername", userUsername);
                 dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
             } else {
                 request.setAttribute("userUsername", userUsername);
                 request.setAttribute("buttonName", "Logout");
-                request.setAttribute("iconLogin", "fas fa-sign-out-alt");
-                request.setAttribute("status", "logout");
+                request.setAttribute("iconName", "fas fa-sign-out-alt");
+                request.setAttribute("actionName", "logout");
                 dispatcher = request.getRequestDispatcher("home.jsp");
             }
         } else {
-            request.setAttribute("userUsername", userUsername);
-            request.setAttribute("message", "Incorrect username or password. Please try again!");
-            dispatcher = request.getRequestDispatcher("user/login.jsp");
+            request.setAttribute("user", user);
+            request.setAttribute("message", "Current password is incorrect. Please try again!");
+            dispatcher = request.getRequestDispatcher("user/updatePassword.jsp");
+        }
+        dispatcher.forward(request, response);
+    }
+
+    private void showUpdateInformationForm(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        request.setAttribute("user", user);
+        Customer customer = customerDAO.selectById(user.getCustomerID());
+        request.setAttribute("customer", customer);
+        List<Province> listProvince =  provinceDAO.findAll();
+        request.setAttribute("listProvince", listProvince);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("user/updateInformation.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void updateInformation(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        Customer customer = customerDAO.selectById(user.getCustomerID());
+        String firstName = request.getParameter("firstName");
+        String lastName = request.getParameter("lastName");
+        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+        String dob = request.getParameter("dob");
+        String mobile = request.getParameter("mobile");
+        String address = request.getParameter("address");
+        String email = request.getParameter("email");
+        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        Customer newCustomer = new Customer(customer.getCustomerID(), lastName, firstName, gender, dob, mobile, address, email, provinceID, customer.getTotalOrders(), customer.getTotalAmounts(), customer.getRankID());
+        customerDAO.update(newCustomer);
+        request.setAttribute("message", "Information is updated");
+        RequestDispatcher dispatcher;
+        if (user.isUserAdmin()) {
+            List<Customer> listCustomer = customerDAO.findAll();
+            request.setAttribute("listCustomer", listCustomer);
+            dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
+        } else {
+            request.setAttribute("userUsername", user.getUserUsername());
+            request.setAttribute("buttonName", "Logout");
+            request.setAttribute("iconName", "fas fa-sign-out-alt");
+            request.setAttribute("actionName", "logout");
+            dispatcher = request.getRequestDispatcher("home.jsp");
         }
         dispatcher.forward(request, response);
     }
 
     private void logout(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        String userUsername = request.getParameter("userUsername");
-        User user = userDAO.selectByUsername(userUsername);
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
         RequestDispatcher dispatcher;
         if (user.isUserAdmin()) {
             dispatcher = request.getRequestDispatcher("user/login.jsp");
         } else {
-            request.setAttribute("userUsername", "");
             request.setAttribute("buttonName", "Login");
-            request.setAttribute("status", "login");
-            request.setAttribute("iconLogin", "fas fa-user");
+            request.setAttribute("actionName", "showLoginForm");
+            request.setAttribute("iconName", "fas fa-user");
             dispatcher = request.getRequestDispatcher("home.jsp");
         }
+        session.invalidate();
         dispatcher.forward(request, response);
-    }
-
-    private void updatePassword(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException, ServletException {
-        String userUsername = request.getParameter("userUsername");
-        String userPassword = request.getParameter("userPassword");
-        int customerID = Integer.parseInt(request.getParameter("customerID"));
-        boolean userAdmin = Boolean.parseBoolean(request.getParameter("userAdmin"));
-        User user = new User(userUsername, userPassword, customerID, userAdmin);
-        userDAO.update(user);
-        //in case the password is accepted and updated successfully
-        RequestDispatcher dispatcher;
-        request.setAttribute("message", "Password is changed");
-        if (user.isUserAdmin()) {
-            List<Customer> listCustomer = customerDAO.findAll();
-            request.setAttribute("listCustomer", listCustomer);
-            dispatcher = request.getRequestDispatcher("customer/listCustomer.jsp");
-        } else {
-            dispatcher = request.getRequestDispatcher("home.jsp");
-        }
-        dispatcher.forward(request, response);
-    }
-
-    private void resetForm() {
-        String message = "";
     }
 }

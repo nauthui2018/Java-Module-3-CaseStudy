@@ -51,7 +51,7 @@
                 <div class="login-content">
                     <div class="login-logo">
                         <a href="#">
-                            <img src="/images/icon/logo.png" alt="CoolAdmin">
+                            <img src="/images/icon/logo.png" alt="Register">
                         </a>
                     </div>
                     <div class="login-form">
@@ -66,7 +66,7 @@
                             </div>
                             <div class="row form-group">
                                 <div class="col col-sm-3">
-                                    <label class="form-control-label">Lats Name</label>
+                                    <label class="form-control-label">Last Name</label>
                                 </div>
                                 <div class="col-12 col-sm-9">
                                     <input type="text" name="lastName" placeholder="Last Name" class="form-control" required>

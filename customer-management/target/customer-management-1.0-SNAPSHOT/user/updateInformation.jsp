@@ -51,17 +51,17 @@
                 <div class="login-content">
                     <div class="login-logo">
                         <a href="#">
-                            <img src="/images/icon/logo.png" alt="Register">
+                            <img src="/images/icon/logo.png" alt="CoolAdmin">
                         </a>
                     </div>
                     <div class="login-form">
-                        <form action="users?action=add" method="post">
+                        <form action="users?action=updateInformation" method="post">
                             <div class="row form-group">
                                 <div class="col col-sm-3">
                                     <label class="form-control-label">First Name</label>
                                 </div>
                                 <div class="col-12 col-sm-9">
-                                    <input type="text" name="firstName" placeholder="First Name" class="form-control" required>
+                                    <input type="text" name="firstName" value="${customer.getFirstName()}" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -69,7 +69,7 @@
                                     <label class="form-control-label">Last Name</label>
                                 </div>
                                 <div class="col-12 col-sm-9">
-                                    <input type="text" name="lastName" placeholder="Last Name" class="form-control" required>
+                                    <input type="text" name="lastName" value="${customer.getLastName()}" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -78,9 +78,10 @@
                                 </div>
                                 <div class="col-12 col-sm-9">
                                     <select name="gender" required>
-                                        <option value="-1">Please select</option>
-                                        <option value="true" name="Male">Male</option>
-                                        <option value="false" name="Female">Female</option>
+                                        <c:if test="${customer.isGender()}">
+                                            <option value="${customer.isGender()}" selected>${customer.viewGender()}</option>
+                                        </c:if>
+                                        <option value="${customer.isGender()}">${customer.viewGender()}</option>
                                     </select>
                                 </div>
                             </div>
@@ -89,7 +90,7 @@
                                     <label class="form-control-label">DOB</label>
                                 </div>
                                 <div class="col-12 col-sm-9">
-                                    <input type="date" name="dob" placeholder="DOB" class="form-control" required>
+                                    <input type="date" name="dob" value="${customer.getDob()}" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -97,7 +98,7 @@
                                     <label class="form-control-label">Mobile</label>
                                 </div>
                                 <div class="col-12 col-sm-9">
-                                    <input type="text" name="mobile" placeholder="Mobile" class="form-control" required>
+                                    <input type="text" name="mobile" value="${customer.getMobile()}" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -105,7 +106,7 @@
                                     <label class="form-control-label">Address</label>
                                 </div>
                                 <div class="col-12 col-sm-9">
-                                    <input type="text" name="address" placeholder="Address" class="form-control" required>
+                                    <input type="text" name="address" value="${customer.getAddress()}" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -113,7 +114,7 @@
                                     <label class="form-control-label">Email</label>
                                 </div>
                                 <div class="col-12 col-sm-9">
-                                    <input type="email" name="email" placeholder="Email address" class="form-control" required>
+                                    <input type="email" name="email" value="${customer.getEmail()}" class="form-control" required>
                                 </div>
                             </div>
                             <div class="row form-group">
@@ -123,24 +124,18 @@
                                 <div class="col-12 col-sm-9">
                                     <select name="provinceID" class="form-control" required>
                                         <c:forEach items="${listProvince}" var="item">
-                                            <option value="${item.provinceID}" selected>${item.provinceName}</option>
+                                            <c:if test="${item.provinceID==customer.getProvinceID()}">
+                                                <option value="${item.provinceID}" selected>${item.provinceName}</option>
+                                            </c:if>
+                                            <c:if test="${!(item.provinceID==customer.getProvinceID())}">
+                                                <option value="${item.provinceID}">${item.provinceName}</option>
+                                            </c:if>
                                         </c:forEach>
                                     </select>
                                 </div>
                             </div>
-                            <input class="au-input au-input--full" type="hidden" name="totalOrders" value="0">
-                            <input class="au-input au-input--full" type="hidden" name="totalAmounts" value="0">
-                            <input class="au-input au-input--full" type="hidden" name="rankID" value="4">
-                            <input class="au-input au-input--full" type="hidden" name="userUsername" value="${requestScope["userUsername"]}">
-                            <input class="au-input au-input--full" type="hidden" name="userPassword" value="${requestScope["userPassword"]}">
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Register</button>
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Done</button>
                         </form>
-                        <div class="login-link">
-                            <p>
-                                Already have account?
-                                <a href="${pageContext.request.contextPath}/users?action=login" class="ml-3">Sign In</a>
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>

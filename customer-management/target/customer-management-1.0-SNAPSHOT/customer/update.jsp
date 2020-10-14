@@ -281,7 +281,7 @@
                                                 <label for="text-input" class="form-control-label">Mobile</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input  value="${customer.getMobile()}"type="text" id="text-input" name="mobile" placeholder="Mobile" class="form-control">
+                                                <input  value="${customer.getMobile()}" type="text" id="text-input" name="mobile" placeholder="Mobile" class="form-control">
                                                 <small class="form-text text-muted">Please enter your mobile number</small>
                                             </div>
                                         </div>

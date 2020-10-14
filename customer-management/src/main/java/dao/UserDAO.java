@@ -11,19 +11,23 @@ import java.util.List;
 public class UserDAO implements BaseDAO<User> {
     HelperDAO helper = new HelperDAO();
 
-    public boolean login(String userUsername, String userPassword) {
-        boolean status = false;
+    public User login(String userUsername, String userPassword) {
+        User user = null;
         String query = "{CALL login(?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
             callableStatement.setString(1, userUsername);
             callableStatement.setString(2, userPassword);
             ResultSet rs = callableStatement.executeQuery();
-            status = rs.next();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                boolean userAdmin = rs.getBoolean("userAdmin");
+                user = new User(userUsername, userPassword, customerID, userAdmin);
+            }
         } catch (SQLException e) {
             helper.printSQLException(e);
         }
-        return status;
+        return user;
     }
 
     public User selectByUsername(String userUsername) {

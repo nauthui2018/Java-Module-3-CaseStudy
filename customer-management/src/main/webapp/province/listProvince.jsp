@@ -151,16 +151,36 @@
                             <div class="setting-menu js-right-sidebar d-none d-lg-block">
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-account"></i>Account</a>
+                                        <a>
+                                            <form action="/users?action=view" method="post">
+                                                <button type="submit" style="border: none; background: none; font-weight: normal">
+                                                    <i class="zmdi zmdi-account mr-3"></i>Account</button>
+                                            </form>
+                                        </a>
                                     </div>
                                     <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-settings"></i>Logout</a>
+                                        <a>
+                                            <form action="/users?action=logout" method="post">
+                                                <button type="submit" style="border: none; background: none; font-weight: normal">
+                                                    <i class="fas fa-sign-out-alt mr-3"></i>Logout</button>
+                                            </form>
+                                        </a>
                                     </div>
                                     <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-settings"></i>Setting</a>
+                                        <a>
+                                            <form action="/users?action=updatePassword" method="post">
+                                                <button type="submit" style="border: none; background: none; font-weight: normal">
+                                                    <i class="zmdi zmdi-settings mr-3"></i>Change Password</button>
+                                            </form>
+                                        </a>
+                                    </div>
+                                    <div class="account-dropdown__item">
+                                        <a>
+                                            <form action="/users?action=updateInformation" method="post">
+                                                <button type="submit" style="border: none; background: none; font-weight: normal">
+                                                    <i class="zmdi zmdi-settings mr-3"></i>Update Information</button>
+                                            </form>
+                                        </a>
                                     </div>
                                 </div>
                             </div>

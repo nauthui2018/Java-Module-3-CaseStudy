@@ -151,19 +151,36 @@
                             <div class="setting-menu js-right-sidebar d-none d-lg-block">
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-account"></i>Account</a>
+                                        <a>
+                                            <form action="/users?action=view" method="post">
+                                                <button type="submit" style="border: none; background: none; font-weight: normal">
+                                                    <i class="zmdi zmdi-account mr-3"></i>Account</button>
+                                            </form>
+                                        </a>
                                     </div>
                                     <div class="account-dropdown__item">
+                                        <a>
                                         <form action="/users?action=logout" method="post">
-                                            <input value="${requestScope["userUsername"]}" type="hidden" name="userUsername">
-                                            <button type="submit" style="border: none; background: none">
-                                                <i class="fas fa-sign-out-alt mr-1"></i>Logout</button>
+                                            <button type="submit" style="border: none; background: none; font-weight: normal">
+                                                <i class="fas fa-sign-out-alt mr-3"></i>Logout</button>
                                         </form>
+                                        </a>
                                     </div>
                                     <div class="account-dropdown__item">
-                                        <a href="#">
-                                            <i class="zmdi zmdi-settings"></i>Setting</a>
+                                        <a>
+                                            <form action="/users?action=updatePassword" method="post">
+                                                <button type="submit" style="border: none; background: none; font-weight: normal">
+                                                    <i class="zmdi zmdi-settings mr-3"></i>Change Password</button>
+                                            </form>
+                                        </a>
+                                    </div>
+                                    <div class="account-dropdown__item">
+                                        <a>
+                                            <form action="/users?action=updateInformation" method="post">
+                                                <button type="submit" style="border: none; background: none; font-weight: normal">
+                                                    <i class="zmdi zmdi-settings mr-3"></i>Update Information</button>
+                                            </form>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -197,7 +214,7 @@
                             </a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow" href="${pageContext.request.contextPath}/users?action=list">
+                            <a class="js-arrow" href="${pageContext.request.contextPath}/users">
                                 <i class="fas fa-table"></i>Users
                             </a>
                         </li>
@@ -329,6 +346,12 @@
 
 <!-- Main JS-->
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
+<script>
+    $(".navbar__list li").click(function() {
+        $(this).siblings(".active").removeClass("active");
+        $(this).addClass("active");
+    });
+</script>
 
 </body>
 

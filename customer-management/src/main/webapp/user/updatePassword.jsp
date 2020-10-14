@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: NguyenVanHuong
-  Date: 10/6/20
-  Time: 9:12 PM
+  Date: 10/7/20
+  Time: 8:03 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -18,7 +18,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Login</title>
+    <title>Register</title>
 
     <!-- Fontfaces CSS-->
     <link href="<c:url value="/css/font-face.css"/>" rel="stylesheet" media="all">
@@ -51,40 +51,30 @@
                 <div class="login-content">
                     <div class="login-logo">
                         <a href="#">
-                            <img src="/images/icon/logo.png" alt="Login">
+                            <img src="/images/icon/logo.png" alt="CoolAdmin">
                         </a>
                     </div>
                     <div class="login-form">
-                        <form action="${pageContext.request.contextPath}/users?action=login" method="post">
+                        <form action="users?action=updatePassword" method="post">
                             <div class="form-group">
                                 <label>Username</label>
-                                <input value="${requestScope["userUsername"]}" class="au-input au-input--full" type="text" name="userUsername" placeholder="Username" required>
+                                <input value="${user.userUsername}" class="au-input au-input--full" type="text" name="userUsername" disabled>
                             </div>
                             <div class="form-group">
-                                <label>Password</label>
-                                <input value="${requestScope["userPassword"]}" class="au-input au-input--full" type="password" name="userPassword" placeholder="Password" required>
+                                <label>Current Password</label>
+                                <input class="au-input au-input--full" type="password" name="currentPassword" placeholder="Current Password" required>
                             </div>
-                            <label class="message">
+                            <label>
                                 <c:if test='${requestScope["message"] != null}'>
                                     <span class="message" style="color: red; font-size: smaller">${requestScope["message"]}</span>
                                 </c:if>
                             </label>
-<%--                            <div class="login-checkbox">--%>
-<%--                                <label>--%>
-<%--                                    <input type="checkbox" name="remember">Remember Me--%>
-<%--                                </label>--%>
-<%--                                <label>--%>
-<%--                                    <a href="#">Forgotten Password?</a>--%>
-<%--                                </label>--%>
-<%--                            </div>--%>
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Sign In</button>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input class="au-input au-input--full" type="password" name="newPassword" placeholder="New Password" required>
+                            </div>
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Update Password</button>
                         </form>
-                        <div class="register-link">
-                            <p>
-                                Don't you have account?
-                                <a href="/users?action=register" style="color: blue">Sign Up Here</a>
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -99,19 +89,25 @@
 <script src="${pageContext.request.contextPath}/vendor/bootstrap-4.1/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/vendor/bootstrap-4.1/bootstrap.min.js"></script>
 <!-- Vendor JS       -->
-<script src="${pageContext.request.contextPath}/vendor/slick/slick.min.js"></script>
+<script src="${pageContext.request.contextPath}/vendor/slick/slick.min.js">
+</script>
 <script src="${pageContext.request.contextPath}/vendor/wow/wow.min.js"></script>
 <script src="${pageContext.request.contextPath}/vendor/animsition/animsition.min.js"></script>
-<script src="${pageContext.request.contextPath}/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
+<script src="${pageContext.request.contextPath}/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+</script>
 <script src="${pageContext.request.contextPath}/vendor/counter-up/jquery.waypoints.min.js"></script>
-<script src="${pageContext.request.contextPath}/vendor/counter-up/jquery.counterup.min.js"></script>
+<script src="${pageContext.request.contextPath}/vendor/counter-up/jquery.counterup.min.js">
+</script>
 <script src="${pageContext.request.contextPath}/vendor/circle-progress/circle-progress.min.js"></script>
 <script src="${pageContext.request.contextPath}/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="${pageContext.request.contextPath}/vendor/chartjs/Chart.bundle.min.js"></script>
-<script src="${pageContext.request.contextPath}/vendor/select2/select2.min.js"></script>
+<script src="${pageContext.request.contextPath}/vendor/select2/select2.min.js">
+</script>
 
 <!-- Main JS-->
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
+
 </body>
+
 </html>
 <!-- end document-->

@@ -18,7 +18,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Register</title>
+    <title>Detail</title>
 
     <!-- Fontfaces CSS-->
     <link href="<c:url value="/css/font-face.css"/>" rel="stylesheet" media="all">
@@ -55,30 +55,87 @@
                         </a>
                     </div>
                     <div class="login-form">
-                        <form action="" method="post">
-                            <div class="form-group">
-                                <label>Username</label>
-                                <input class="au-input au-input--full" type="text" name="userUsername" placeholder="Username">
+                        <form action="${requestScope["action"]}">
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">Username</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${user.userUsername}" class="form-control" name="userUsername" disabled>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">Full Name</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${customer.firstName} ${customer.lastName}" class="form-control" disabled>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>Password</label>
-                                <input class="au-input au-input--full" type="password" name="userPassword" placeholder="Password">
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">Gender</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${customer.viewGender()}" class="form-control" disabled>
+                                </div>
                             </div>
-                            <div class="login-checkbox">
-                                <label>
-                                    <input type="checkbox" name="aggree">Agree the terms and policy
-                                </label>
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">DOB</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${customer.dob}" class="form-control" disabled>
+                                </div>
                             </div>
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Register</button>
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">Mobile</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${customer.mobile}" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">Address</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${customer.address}" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">Province</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${province.provinceName}" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">Email</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${customer.email}" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-sm-3">
+                                    <label class="form-control-label">Rank</label>
+                                </div>
+                                <div class="col-12 col-sm-9">
+                                    <input value="${rank.rankName}" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">DONE</button>
                         </form>
-                        <div class="register-link">
-                            <p>
-                                Already have account?
-                                <a href="${pageContext.request.contextPath}/users?action=login">Sign In</a>
+                        <div class="login-link">
+                            <p style="text-align: center">
+                                <a href="${pageContext.request.contextPath}/users?action=updateInformation" class="ml-3">Update Information</a>
+                            </p>
+                            <p style="text-align: center">
+                                <a href="${pageContext.request.contextPath}/users?action=updatePassword" class="ml-3">Change Password</a>
                             </p>
                         </div>
                     </div>

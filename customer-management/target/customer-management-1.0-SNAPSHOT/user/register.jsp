@@ -51,7 +51,7 @@
                 <div class="login-content">
                     <div class="login-logo">
                         <a href="#">
-                            <img src="/images/icon/logo.png" alt="CoolAdmin">
+                            <img src="/images/icon/logo.png" alt="Register">
                         </a>
                     </div>
                     <div class="login-form">
@@ -69,11 +69,6 @@
                                 <label>Password</label>
                                 <input class="au-input au-input--full" type="password" name="userPassword" placeholder="Password" required>
                             </div>
-<%--                            <div class="login-checkbox">--%>
-<%--                                <label>--%>
-<%--                                    <input type="checkbox" name="aggree">Agree the terms and policy--%>
-<%--                                </label>--%>
-<%--                            </div>--%>
                             <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Next</button>
                         </form>
                         <div class="login-link">

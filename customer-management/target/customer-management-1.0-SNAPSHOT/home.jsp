@@ -16,6 +16,19 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Core theme CSS (includes Bootstrap)-->
     <link href="css/styles.css" rel="stylesheet" />
+    <style>
+        #searchForm, #loginForm {
+            font-family: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            color: #ffffff;
+            font-size: 0.95rem;
+        }
+
+        #searchForm.button {
+            border: none;
+            background: none;
+            color: white;
+        }
+    </style>
 </head>
 <body id="page-top">
 <!-- Navigation-->
@@ -27,13 +40,25 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About Us</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="javascript:;"><input id="search" type="text" placeholder="Search here" style="color: #ffffff;"> <img class="fa fa-search"></a></li>
-                <form action="/users?action=${requestScope["actionName"]}" method="post">
+                <li class="nav-item">
+                    <form id="searchForm">
+                        <input id="search" type="text" placeholder="Search here" style="font-size: smaller">
+                        <button class="fa fa-search" type="submit" style="border: none; background: none; color: white"></button>
+                    </form>
+                </li>
+                <form action="/users?action=view" method="post">
                     <li class="nav-item ">
                         <input value="${requestScope["userUsername"]}" type="hidden" name="userUsername">
-                        <a style="color: white">${requestScope["userUsername"]}</a>
                         <button type="submit" style="border: none; background: none; color: white">
-                            ${requestScope["buttonName"]}  <i class="${requestScope["iconLogin"]} ml-1"></i></button>
+                            ${requestScope["userUsername"]}</button>
+                    </li>
+                </form>
+                <form id="loginForm" action="/users?action=${requestScope["actionName"]}" method="post">
+                    <li class="nav-item ">
+                        <input value="${requestScope["userUsername"]}" type="hidden" name="userUsername">
+                        <button type="submit" style="border: none; background: none; color: white">
+                            ${requestScope["buttonName"]} <i class="${requestScope["iconName"]} ml-1" style="font-weight: bolder"></i></button>
+                    </li>
                 </form>
             </ul>
         </div>
