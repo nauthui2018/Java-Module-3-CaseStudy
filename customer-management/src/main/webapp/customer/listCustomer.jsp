@@ -45,6 +45,37 @@
         ::placeholder {
             color: white;
         }
+        /* The container <div> - needed to position the dropdown content */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            margin-left: 40px;
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 100px;
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding-left: 5px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: grey}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
     </style>
 
 </head>
@@ -261,18 +292,42 @@
                                     <thead>
                                     <tr>
                                         <th>Name
-                                            <a href="${pageContext.request.contextPath}/customers?action=sortByName">
-                                                <i class="fa fa-sort ml-1"></i></a>
+                                            <a href="/customers?action=${requestScope["sort"]}">
+                                                <i class="fa fa-sort" style="color: white"></i></a>
                                         </th>
                                         <th>Mobile</th>
-                                        <th>Email</th>
-                                        <th>Amounts
-                                            <a href="${pageContext.request.contextPath}/customers?action=sortByAmount">
-                                                <i class="fa fa-sort ml-1"></i></a>
-                                        </th>
-                                        <th>Rank
-                                            <a href="${pageContext.request.contextPath}/customers?action=sortByRank">
-                                                <i class="fa fa-sort ml-1"></i></a>
+                                        <th>Province</th>
+                                        <th>Amount</th>
+                                        <th class="dropdown dropdown-toggle " data-toggle="dropdown">Rank
+                                            <ul class="dropdown-menu dropdown-content">
+                                                <li>
+                                                    <a>
+                                                        <form action="/customers?action=searchRank&rankID=1" method="post">
+                                                            <button type="submit" style="border: none; background: none; font-weight: normal">Diamond</button>
+                                                        </form>
+                                                    </a>
+                                                </li>
+                                                <li><a>
+                                                    <form action="/customers?action=searchRank&rankID=2" method="post">
+                                                        <button type="submit" style="border: none; background: none; font-weight: normal">Gold</button>
+                                                    </form>
+                                                </a></li>
+                                                <li><a>
+                                                    <form action="/customers?action=searchRank&rankID=3" method="post">
+                                                        <button type="submit" style="border: none; background: none; font-weight: normal">Silver</button>
+                                                    </form>
+                                                </a></li>
+                                                <li><a>
+                                                    <form action="/customers?action=searchRank&rankID=4" method="post">
+                                                        <button type="submit" style="border: none; background: none; font-weight: normal">Basic</button>
+                                                    </form>
+                                                </a></li>
+                                                <li><a>
+                                                    <form action="/customers?action=searchRank&rankID=5" method="post">
+                                                        <button type="submit" style="border: none; background: none; font-weight: normal">Other</button>
+                                                    </form>
+                                                </a></li>
+                                            </ul>
                                         </th>
                                         <th>Actions</th>
                                     </tr>
@@ -282,7 +337,13 @@
                                         <tr>
                                             <td>${customer.firstName} ${customer.lastName}</td>
                                             <td><c:out value="${customer.mobile}"/></td>
-                                            <td><c:out value="${customer.email}"/></td>
+                                            <td>
+                                                <c:forEach items="${listProvince}" var="province">
+                                                    <c:if test="${province.provinceID==customer.getProvinceID()}">
+                                                        ${province.provinceName}
+                                                    </c:if>
+                                                </c:forEach>
+                                            </td>
                                             <td><c:out value="${customer.totalAmounts}"/></td>
                                             <td>
                                                 <c:forEach items="${listRank}" var="rank">

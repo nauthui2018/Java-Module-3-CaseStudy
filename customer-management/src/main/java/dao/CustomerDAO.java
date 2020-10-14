@@ -219,4 +219,31 @@ public class CustomerDAO implements ICustomerDAO {
         }
         return customer;
     }
+
+    public List<Customer> sortByName() {
+        String query = "{CALL sort_customer_by_name()}";
+        List<Customer> customers = new ArrayList<>();
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String lastName = rs.getString("lastName");
+                String firstName = rs.getString("firstName");
+                boolean gender = rs.getBoolean("gender");
+                String dob = rs.getString("dob");
+                String mobile = rs.getString("mobile");
+                String address = rs.getString("address");
+                String email = rs.getString("email");
+                int provinceID = rs.getInt("provinceID");
+                int totalOrders = rs.getInt("totalOrders");
+                double totalAmounts = rs.getDouble("totalAmounts");
+                int rankID = rs.getInt("rankID");
+                customers.add(new Customer(customerID, lastName, firstName, gender, dob, mobile, address, email, provinceID, totalOrders, totalAmounts, rankID));
+            }
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return customers;
+    }
 }

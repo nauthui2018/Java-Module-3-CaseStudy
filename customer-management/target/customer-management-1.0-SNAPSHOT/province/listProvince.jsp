@@ -77,7 +77,7 @@
                         </a>
                     </li>
                     <li class="has-sub">
-                        <a class="js-arrow" href="${pageContext.request.contextPath}/users">
+                        <a class="js-arrow" href="${pageContext.request.contextPath}/users?action=list">
                             <i class="fas fa-table"></i>Users
                         </a>
                     </li>
