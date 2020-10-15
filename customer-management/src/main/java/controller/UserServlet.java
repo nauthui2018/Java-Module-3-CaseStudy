@@ -52,15 +52,6 @@ public class UserServlet extends HttpServlet {
                 case "login":
                     login(request, response);
                     break;
-                case "logout":
-                    logout(request, response);
-                    break;
-                case "showLoginForm":
-                    showLoginForm(request, response);
-                    break;
-                case "view":
-                    view(request, response);
-                    break;
             }
         } catch (SQLException ex) {
             throw new ServletException(ex);
@@ -79,14 +70,23 @@ public class UserServlet extends HttpServlet {
                 case "register":
                     showRegisterForm(request, response);
                     break;
+                case "login":
+                    showLoginForm(request, response);
+                    break;
+                case "list":
+                    listUsers(request, response);
+                    break;
+                case "view":
+                    view(request, response);
+                    break;
                 case "updatePassword":
                     showUpdatePasswordForm(request, response);
                     break;
                 case "updateInformation":
                     showUpdateInformationForm(request, response);
                     break;
-                case "list":
-                    listUsers(request, response);
+                case "logout":
+                    logout(request, response);
                     break;
                 default:
                     showHomepage(request, response);
@@ -108,7 +108,7 @@ public class UserServlet extends HttpServlet {
             request.setAttribute("actionName", "logout");
         } else {
             request.setAttribute("buttonName", "Login");
-            request.setAttribute("actionName", "showLoginForm");
+            request.setAttribute("actionName", "login");
             request.setAttribute("iconName", "fas fa-user");
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher("home.jsp");
@@ -149,7 +149,7 @@ public class UserServlet extends HttpServlet {
         } else {
             request.setAttribute("userUsername", userUsername);
             request.setAttribute("message", "Incorrect username or password. Please try again!");
-            dispatcher = request.getRequestDispatcher("user?action=showLoginForm");
+            dispatcher = request.getRequestDispatcher("user?action=login");
         }
         dispatcher.forward(request, response);
     }
@@ -335,7 +335,7 @@ public class UserServlet extends HttpServlet {
             dispatcher = request.getRequestDispatcher("user/login.jsp");
         } else {
             request.setAttribute("buttonName", "Login");
-            request.setAttribute("actionName", "showLoginForm");
+            request.setAttribute("actionName", "login");
             request.setAttribute("iconName", "fas fa-user");
             dispatcher = request.getRequestDispatcher("home.jsp");
         }

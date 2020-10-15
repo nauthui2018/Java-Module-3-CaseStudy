@@ -46,20 +46,13 @@
                         <button class="fa fa-search" type="submit" style="border: none; background: none; color: white"></button>
                     </form>
                 </li>
-                <form action="/users?action=view" method="post">
-                    <li class="nav-item ">
-                        <input value="${requestScope["userUsername"]}" type="hidden" name="userUsername">
-                        <button type="submit" style="border: none; background: none; color: white">
-                            ${requestScope["userUsername"]}</button>
-                    </li>
-                </form>
-                <form id="loginForm" action="/users?action=${requestScope["actionName"]}" method="post">
-                    <li class="nav-item ">
-                        <input value="${requestScope["userUsername"]}" type="hidden" name="userUsername">
-                        <button type="submit" style="border: none; background: none; color: white">
-                            ${requestScope["buttonName"]} <i class="${requestScope["iconName"]} ml-1" style="font-weight: bolder"></i></button>
-                    </li>
-                </form>
+                <li  class="nav-item">
+                    <a href="/users?action=view">${requestScope["userUsername"]}</a>
+                </li>
+                <li  class="nav-item">
+                    <a class="btn" href="/users?action=${requestScope["actionName"]}" style="color: white; padding: 0">${requestScope["buttonName"]}
+                        <i class="${requestScope["iconName"]} ml-1" style="color: white"></i></a>
+                </li>
             </ul>
         </div>
     </div>

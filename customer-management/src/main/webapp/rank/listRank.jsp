@@ -28,6 +28,7 @@
 
     <!-- Bootstrap CSS-->
     <link href="<c:url value="/vendor/bootstrap-4.1/bootstrap.min.css"/>" rel="stylesheet" media="all">
+    <link href="<c:url value="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css"/>" rel="stylesheet" media="all">
 
     <!-- Vendor CSS-->
     <link href="<c:url value="/vendor/animsition/animsition.min.css"/>" rel="stylesheet" media="all">
@@ -61,25 +62,17 @@
         <div class="menu-sidebar2__content js-scrollbar1">
             <nav class="navbar-sidebar2">
                 <ul class="list-unstyled navbar__list">
+                    <li class="has-sub">
+                        <a href="/customers"/><i class="fas fa-table"></i>Customers</a>
+                    </li>
+                    <li class="has-sub">
+                        <a href="/provinces"><i class="fas fa-table"></i>Provinces</a>
+                    </li>
                     <li class="active has-sub">
-                        <a class="js-arrow" href="${pageContext.request.contextPath}/customers"/>
-                            <i class="fas fa-table"></i>Customers
-                        </a>
+                        <a href="/ranks"><i class="fas fa-table"></i>Ranks</a>
                     </li>
                     <li class="has-sub">
-                        <a class="js-arrow" href="${pageContext.request.contextPath}/provinces">
-                            <i class="fas fa-table"></i>Provinces
-                        </a>
-                    </li>
-                    <li class="has-sub">
-                        <a class="js-arrow" href="${pageContext.request.contextPath}/ranks">
-                            <i class="fas fa-table"></i>Ranks
-                        </a>
-                    </li>
-                    <li class="has-sub">
-                        <a class="js-arrow" href="${pageContext.request.contextPath}/users?action=list">
-                            <i class="fas fa-table"></i>Users
-                        </a>
+                        <a href="/users?action=list"><i class="fas fa-table"></i>Users</a>
                     </li>
                 </ul>
             </nav>
@@ -107,80 +100,22 @@
                                         <i class="fas fa-search"></i></button>
                                 </form>
                             </div>
-                            <div class="header-button-item has-noti js-item-menu">
-                                <i class="zmdi zmdi-notifications"></i>
-                                <div class="notifi-dropdown js-dropdown">
-                                    <div class="notifi__title">
-                                        <p>You have 3 Notifications</p>
-                                    </div>
-                                    <div class="notifi__item">
-                                        <div class="bg-c1 img-cir img-40">
-                                            <i class="zmdi zmdi-email-open"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>You got a email notification</p>
-                                            <span class="date">April 12, 2018 06:50</span>
-                                        </div>
-                                    </div>
-                                    <div class="notifi__item">
-                                        <div class="bg-c2 img-cir img-40">
-                                            <i class="zmdi zmdi-account-box"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>Your account has been blocked</p>
-                                            <span class="date">April 12, 2018 06:50</span>
-                                        </div>
-                                    </div>
-                                    <div class="notifi__item">
-                                        <div class="bg-c3 img-cir img-40">
-                                            <i class="zmdi zmdi-file-text"></i>
-                                        </div>
-                                        <div class="content">
-                                            <p>You got a new file</p>
-                                            <span class="date">April 12, 2018 06:50</span>
-                                        </div>
-                                    </div>
-                                    <div class="notifi__footer">
-                                        <a href="#">All notifications</a>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="header-button-item mr-0 js-sidebar-btn">
                                 <i class="zmdi zmdi-menu"></i>
                             </div>
                             <div class="setting-menu js-right-sidebar d-none d-lg-block">
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
-                                        <a>
-                                            <form action="/users?action=view" method="post">
-                                                <button type="submit" style="border: none; background: none; font-weight: normal">
-                                                    <i class="zmdi zmdi-account mr-3"></i>Account</button>
-                                            </form>
-                                        </a>
+                                        <a onclick="window.location.href='/users?action=view'"><i class="zmdi zmdi-account mr-3"></i>Account</a>
                                     </div>
                                     <div class="account-dropdown__item">
-                                        <a>
-                                            <form action="/users?action=logout" method="post">
-                                                <button type="submit" style="border: none; background: none; font-weight: normal">
-                                                    <i class="fas fa-sign-out-alt mr-3"></i>Logout</button>
-                                            </form>
-                                        </a>
+                                        <a onclick="window.location.href='/users?action=logout'"><i class="fas fa-sign-out-alt mr-3"></i>Logout</a>
                                     </div>
                                     <div class="account-dropdown__item">
-                                        <a>
-                                            <form action="/users?action=updatePassword" method="post">
-                                                <button type="submit" style="border: none; background: none; font-weight: normal">
-                                                    <i class="zmdi zmdi-settings mr-3"></i>Change Password</button>
-                                            </form>
-                                        </a>
+                                        <a onclick="window.location.href='/users?action=updatePassword'"><i class="zmdi zmdi-settings mr-3"></i>Change Password</a>
                                     </div>
                                     <div class="account-dropdown__item">
-                                        <a>
-                                            <form action="/users?action=updateInformation" method="post">
-                                                <button type="submit" style="border: none; background: none; font-weight: normal">
-                                                    <i class="zmdi zmdi-settings mr-3"></i>Update Information</button>
-                                            </form>
-                                        </a>
+                                        <a onclick="window.location.href='/users?action=updateInformation'"><i class="zmdi zmdi-settings mr-3"></i>Update Information</a>
                                     </div>
                                 </div>
                             </div>
@@ -199,24 +134,28 @@
                 <nav class="navbar-sidebar2">
                     <ul class="list-unstyled navbar__list">
                         <li class="active has-sub">
-                            <a class="js-arrow" href="${pageContext.request.contextPath}/customers">
-                                <i class="fas fa-table"></i>Customers
-                            </a>
+                            <a href="/customers"/><i class="fas fa-table"></i>Customers</a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow" href="${pageContext.request.contextPath}/provinces">
-                                <i class="fas fa-table"></i>Users
-                            </a>
+                            <a href="/provinces"/><i class="fas fa-table"></i>Provinces</a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow" href="${pageContext.request.contextPath}/ranks">
-                                <i class="fas fa-table"></i>Ranks
-                            </a>
+                            <a href="/ranks"/><i class="fas fa-table"></i>Ranks</a>
                         </li>
                         <li class="has-sub">
-                            <a class="js-arrow" href="${pageContext.request.contextPath}/users?action=list">
-                                <i class="fas fa-table"></i>Users
-                            </a>
+                            <a href="/users?action=list"/><i class="fas fa-table"></i>Users</a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="/users?action=view"/><i class="zmdi zmdi-account mr-3"></i>Account</a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="/users?action=logout"/><i class="fas fa-sign-out-alt mr-3"></i>Logout</a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="/users?action=updatePassword"/><i class="zmdi zmdi-settings mr-3"></i>Change Password</a>
+                        </li>
+                        <li class="has-sub">
+                            <a href="/users?action=updateInformation"/><i class="zmdi zmdi-settings mr-3 mr-3"></i>Update Information</a>
                         </li>
                     </ul>
                 </nav>
@@ -234,12 +173,13 @@
                                 <div class="au-breadcrumb-left">
                                     <span class="au-breadcrumb-span" style="font-size: larger">All Ranks</span>
                                 </div>
-                                <p>
-                                    <c:if test='${requestScope["message"] != null}'>
-                                        <span class="message" style="color: blue; font-size: larger">${requestScope["message"]}</span>
-                                    </c:if>
-                                </p>
-                                <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/ranks?action=add">
+                                <c:if test='${requestScope["message"] != null}'>
+                                    <div class="alert alert-success alert-dismissible mt-3">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <strong>Success!</strong> ${requestScope["message"]}
+                                    </div>
+                                </c:if>
+                                <a class="btn btn-primary btn-sm" href="/ranks?action=add">
                                 <i class="zmdi zmdi-plus"></i> New Rank</a>
 
                             </div>
@@ -306,6 +246,10 @@
 <!-- Bootstrap JS-->
 <script src="${pageContext.request.contextPath}/vendor/bootstrap-4.1/popper.min.js"></script>
 <script src="${pageContext.request.contextPath}/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<!-- Datatable JS-->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 <!-- Vendor JS       -->
 <script src="${pageContext.request.contextPath}/vendor/slick/slick.min.js"></script>
 <script src="${pageContext.request.contextPath}/vendor/wow/wow.min.js"></script>
@@ -324,7 +268,13 @@
 
 <!-- Main JS-->
 <script src="${pageContext.request.contextPath}/js/main.js"></script>
-
+<script>
+    $('.mydatatable').DataTable({
+        searching: false,
+        ordering: false,
+        lengthMenu: [[10, 15, 25, 50, -1], [10, 15, 25, 50, "All"]]
+    });
+</script>
 </body>
 
 </html>
