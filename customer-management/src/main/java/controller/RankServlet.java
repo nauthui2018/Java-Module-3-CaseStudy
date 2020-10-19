@@ -1,6 +1,8 @@
 package controller;
 
+import dao.CustomerDAO;
 import dao.RankDAO;
+import model.Customer;
 import model.Rank;
 
 import javax.servlet.RequestDispatcher;
@@ -15,10 +17,8 @@ import java.util.List;
 
 @WebServlet(name = "RankServlet", urlPatterns = "/ranks")
 public class RankServlet extends HttpServlet {
-    private RankDAO rankDAO;
-    public void init() {
-        rankDAO = new RankDAO();
-    }
+    private RankDAO rankDAO = new RankDAO();
+    private CustomerDAO customerDAO = new CustomerDAO();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -98,8 +98,12 @@ public class RankServlet extends HttpServlet {
             throws SQLException, ServletException, IOException {
         int rankID = Integer.parseInt(request.getParameter("rankID"));
         Rank rank = rankDAO.selectById(rankID);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("rank/delete.jsp");
         request.setAttribute("rank", rank);
+        List<Customer> customers = customerDAO.selectByRank(rankID);
+        request.setAttribute("listCustomer", customers);
+        List<Rank> ranks = rankDAO.findAll();
+        request.setAttribute("listRank", ranks);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("rank/delete.jsp");
         dispatcher.forward(request, response);
     }
 

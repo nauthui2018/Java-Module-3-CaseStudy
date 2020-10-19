@@ -8,6 +8,7 @@ import model.Customer;
 import model.Province;
 import model.Rank;
 import model.User;
+import service.ValidateHelper;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,6 +26,7 @@ public class CustomerServlet extends HttpServlet {
     private RankDAO rankDAO = new RankDAO();
     private ProvinceDAO provinceDAO = new ProvinceDAO();
     private UserDAO userDAO = new UserDAO();
+    private ValidateHelper validateHelper = new ValidateHelper();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -201,15 +203,21 @@ public class CustomerServlet extends HttpServlet {
             throws SQLException, IOException, ServletException {
         String lastName = request.getParameter("lastName");
         String firstName = request.getParameter("firstName");
-        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+        String genderStr = request.getParameter("gender");
         String dob = request.getParameter("dob");
         String mobile = request.getParameter("mobile");
         String address = request.getParameter("address");
         String email = request.getParameter("email");
-        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
-        int totalOrders = Integer.parseInt(request.getParameter("totalOrders"));
-        double totalAmounts = Double.parseDouble(request.getParameter("totalAmounts"));
-        int rankID = Integer.parseInt(request.getParameter("rankID"));
+        String provinceIDStr = request.getParameter("provinceID");
+        String totalOrdersStr = request.getParameter("totalOrders");
+        String totalAmountsStr = request.getParameter("totalAmounts");
+        String rankIDStr = request.getParameter("rankID");
+        validateHelper.validateCustomer(lastName, firstName, genderStr, dob, mobile, address, email, provinceIDStr, totalOrdersStr, totalAmountsStr, rankIDStr);
+        boolean gender = Boolean.parseBoolean(genderStr);
+        int provinceID = Integer.parseInt(provinceIDStr);
+        int totalOrders = Integer.parseInt(totalOrdersStr);
+        double totalAmounts = Double.parseDouble(totalAmountsStr);
+        int rankID = Integer.parseInt(rankIDStr);
         Customer newCustomer = new Customer(lastName, firstName, gender, dob, mobile, address, email, provinceID, totalOrders, totalAmounts, rankID);
         customerDAO.add(newCustomer);
         List<Customer> listCustomer = customerDAO.findAll();
@@ -229,15 +237,21 @@ public class CustomerServlet extends HttpServlet {
         int customerID = Integer.parseInt(request.getParameter("customerID"));
         String lastName = request.getParameter("lastName");
         String firstName = request.getParameter("firstName");
-        boolean gender = Boolean.parseBoolean(request.getParameter("gender"));
+        String genderStr = request.getParameter("gender");
         String dob = request.getParameter("dob");
         String mobile = request.getParameter("mobile");
         String address = request.getParameter("address");
         String email = request.getParameter("email");
-        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
-        int totalOrders = Integer.parseInt(request.getParameter("totalOrders"));
-        double totalAmounts = Double.parseDouble(request.getParameter("totalAmounts"));
-        int rankID = Integer.parseInt(request.getParameter("rankID"));
+        String provinceIDStr = request.getParameter("provinceID");
+        String totalOrdersStr = request.getParameter("totalOrders");
+        String totalAmountsStr = request.getParameter("totalAmounts");
+        String rankIDStr = request.getParameter("rankID");
+        validateHelper.validateCustomer(lastName, firstName, genderStr, dob, mobile, address, email, provinceIDStr, totalOrdersStr, totalAmountsStr, rankIDStr);
+        boolean gender = Boolean.parseBoolean(genderStr);
+        int provinceID = Integer.parseInt(provinceIDStr);
+        int totalOrders = Integer.parseInt(totalOrdersStr);
+        double totalAmounts = Double.parseDouble(totalAmountsStr);
+        int rankID = Integer.parseInt(rankIDStr);
         Customer customer = new Customer(customerID, lastName, firstName, gender, dob, mobile, address, email, provinceID, totalOrders, totalAmounts, rankID);
         customerDAO.update(customer);
         List<Customer> listCustomer = customerDAO.findAll();
