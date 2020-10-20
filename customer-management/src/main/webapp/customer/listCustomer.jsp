@@ -203,7 +203,8 @@
                         <div class="col-sm-12">
                             <div class="au-breadcrumb-content">
                                 <div class="au-breadcrumb-left">
-                                    <a href="/customers">All Customers</a>
+                                    <a class="btn btn-primary btn-sm" href="/customers?action=add">
+                                        <i class="zmdi zmdi-plus mr-1"></i>New Customer</a>
                                 </div>
                                 <c:if test='${requestScope["message"] != null}'>
                                     <div class="alert alert-success alert-dismissible mt-3">
@@ -211,8 +212,6 @@
                                         <strong>Success!</strong> ${requestScope["message"]}
                                     </div>
                                 </c:if>
-                                <a class="btn btn-primary btn-sm" href="/customers?action=add">
-                                <i class="zmdi zmdi-plus"></i>Add New Customer</a>
                             </div>
                         </div>
                     </div>
@@ -240,32 +239,14 @@
                                         <th>Amount</th>
                                         <th class="dropdown dropdown-toggle " data-toggle="dropdown">Rank
                                             <ul class="dropdown-menu dropdown-content">
-                                                <li><a>
-                                                        <form action="/customers?action=searchRank&rankID=1" method="post">
-                                                            <button type="submit" style="border: none; background: none; font-weight: normal">Diamond</button>
+                                                <c:forEach items="${listRank}" var="rank">
+                                                    <li><a>
+                                                        <form action="/customers?action=searchRank&rankID=${rank.rankID}" method="post">
+                                                            <button type="submit" style="border: none; background: none; font-weight: normal">${rank.rankName}</button>
                                                         </form>
                                                     </a>
-                                                </li>
-                                                <li><a>
-                                                    <form action="/customers?action=searchRank&rankID=2" method="post">
-                                                        <button type="submit" style="border: none; background: none; font-weight: normal">Gold</button>
-                                                    </form>
-                                                </a></li>
-                                                <li><a>
-                                                    <form action="/customers?action=searchRank&rankID=3" method="post">
-                                                        <button type="submit" style="border: none; background: none; font-weight: normal">Silver</button>
-                                                    </form>
-                                                </a></li>
-                                                <li><a>
-                                                    <form action="/customers?action=searchRank&rankID=4" method="post">
-                                                        <button type="submit" style="border: none; background: none; font-weight: normal">Basic</button>
-                                                    </form>
-                                                </a></li>
-                                                <li><a>
-                                                    <form action="/customers?action=searchRank&rankID=5" method="post">
-                                                        <button type="submit" style="border: none; background: none; font-weight: normal">Other</button>
-                                                    </form>
-                                                </a></li>
+                                                    </li>
+                                                </c:forEach>
                                                 <li>
                                                     <a onclick="window.location.href='/customers'">All</a>
                                                 </li>

@@ -193,6 +193,35 @@ public class CustomerDAO implements ICustomerDAO {
         return customers;
     }
 
+    @Override
+    public List<Customer> selectByProvince(int provinceID) {
+        List<Customer> customers = new ArrayList<>();
+        String query = "{CALL get_customer_by_province(?)}";
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            callableStatement.setInt(1, provinceID);
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int customerID = rs.getInt("customerID");
+                String lastName = rs.getString("lastName");
+                String firstName = rs.getString("firstName");
+                boolean gender = rs.getBoolean("gender");
+                String dob = rs.getString("dob");
+                String mobile = rs.getString("mobile");
+                String address = rs.getString("address");
+                String email = rs.getString("email");
+                provinceID = rs.getInt("provinceID");
+                int totalOrders = rs.getInt("totalOrders");
+                double totalAmounts = rs.getDouble("totalAmounts");
+                int rankID = rs.getInt("rankID");
+                customers.add(new Customer(customerID, lastName, firstName, gender, dob, mobile, address, email, provinceID, totalOrders, totalAmounts, rankID));
+            }
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return customers;
+    }
+
     public Customer getNewCustomer() {
         Customer customer = null;
         String query = "{CALL get_new_customer()}";
@@ -245,5 +274,67 @@ public class CustomerDAO implements ICustomerDAO {
             helper.printSQLException(e);
         }
         return customers;
+    }
+
+    @Override
+    public boolean updateCustomerByRank(int currentID, int newID) {
+        boolean rowUpdated = false;
+        String query = "{CALL update_customer_by_rank(?,?)}";
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            callableStatement.setInt(1, currentID);
+            callableStatement.setInt(2, newID);
+            callableStatement.executeUpdate();
+            rowUpdated = callableStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return rowUpdated;
+    }
+
+    @Override
+    public boolean deleteCustomerByRank(int rankID) {
+        String query = "{CALL delete_customer_by_rank(?)}";
+        boolean rowDeleted = false;
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            callableStatement.setInt(1, rankID);
+            callableStatement.executeUpdate();
+            rowDeleted = callableStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return rowDeleted;
+    }
+
+    @Override
+    public boolean updateCustomerByProvince(int currentID, int newID) {
+        boolean rowUpdated = false;
+        String query = "{CALL update_customer_by_province(?,?)}";
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            callableStatement.setInt(1, currentID);
+            callableStatement.setInt(2, newID);
+            callableStatement.executeUpdate();
+            rowUpdated = callableStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return rowUpdated;
+    }
+
+    @Override
+    public boolean deleteCustomerByProvince(int provinceID) {
+        String query = "{CALL delete_customer_by_province(?)}";
+        boolean rowDeleted = false;
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            callableStatement.setInt(1, provinceID);
+            callableStatement.executeUpdate();
+            rowDeleted = callableStatement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return rowDeleted;
     }
 }

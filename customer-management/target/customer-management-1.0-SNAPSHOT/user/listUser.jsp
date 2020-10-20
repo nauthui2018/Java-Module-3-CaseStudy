@@ -179,8 +179,6 @@
                                         <strong>Success!</strong> ${requestScope["message"]}
                                     </div>
                                 </c:if>
-                                <a class="btn btn-primary btn-sm" href="/users?action=add">
-                                <i class="zmdi zmdi-plus"></i> Add New User</a>
                             </div>
                         </div>
                     </div>

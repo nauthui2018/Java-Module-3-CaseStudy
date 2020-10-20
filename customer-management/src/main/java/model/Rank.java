@@ -10,6 +10,10 @@ public class Rank {
     public Rank() {
     }
 
+    public Rank(String rankName) {
+        this.rankName = rankName;
+    }
+
     public Rank(int rankID, String rankName) {
         this.rankID = rankID;
         this.rankName = rankName;

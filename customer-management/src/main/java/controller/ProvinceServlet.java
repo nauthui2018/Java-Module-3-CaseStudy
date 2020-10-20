@@ -1,7 +1,11 @@
 package controller;
 
+import dao.CustomerDAO;
 import dao.ProvinceDAO;
+import dao.RankDAO;
+import model.Customer;
 import model.Province;
+import model.Rank;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,10 +19,9 @@ import java.util.List;
 
 @WebServlet(name = "ProvinceServlet", urlPatterns = "/provinces")
 public class ProvinceServlet extends HttpServlet {
-    private ProvinceDAO provinceDAO;
-    public void init() {
-        provinceDAO = new ProvinceDAO();
-    }
+    private ProvinceDAO provinceDAO = new ProvinceDAO();
+    private CustomerDAO customerDAO = new CustomerDAO();
+    private RankDAO rankDAO = new RankDAO();
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -35,8 +38,14 @@ public class ProvinceServlet extends HttpServlet {
                 case "update":
                     updateProvince(request, response);
                     break;
-                case "delete":
-                    deleteProvince(request, response);
+                case "showDeleteForm":
+                    takeActionBeforeDelete(request, response);
+                    break;
+                case "updateCustomersAndDeleteProvince":
+                    updateCustomersAndDeleteProvince(request, response);
+                    break;
+                case "deleteCustomersAndDeleteProvince":
+                    deleteCustomersAndDeleteProvince(request, response);
                     break;
             }
         } catch (SQLException ex) {
@@ -59,7 +68,7 @@ public class ProvinceServlet extends HttpServlet {
                 case "update":
                     showUpdateForm(request, response);
                     break;
-                case "delete":
+                case "showDeleteForm":
                     showDeleteForm(request, response);
                     break;
                 default:
@@ -98,21 +107,62 @@ public class ProvinceServlet extends HttpServlet {
             throws SQLException, ServletException, IOException {
         int provinceID = Integer.parseInt(request.getParameter("provinceID"));
         Province province = provinceDAO.selectById(provinceID);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("province/delete.jsp");
         request.setAttribute("province", province);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("province/deleteForm.jsp");
+        dispatcher.forward(request, response);
+    }
+
+    private void takeActionBeforeDelete(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        Province province = provinceDAO.selectById(provinceID);
+        request.setAttribute("province", province);
+        List<Customer> customers = customerDAO.selectByProvince(provinceID);
+        request.setAttribute("listCustomer", customers);
+        List<Province> provinces = provinceDAO.listAfterDelete(provinceID);
+        request.setAttribute("listProvince", provinces);
+        List<Rank> ranks = rankDAO.findAll();
+        request.setAttribute("listRank", ranks);
+        int actionCode = Integer.parseInt(request.getParameter("actionCode"));
+        RequestDispatcher dispatcher;
+        switch (actionCode) {
+            case 1:
+                dispatcher = request.getRequestDispatcher("province/updateCustomers.jsp");
+                break;
+            case 2:
+                dispatcher = request.getRequestDispatcher("province/deleteCustomers.jsp");
+                break;
+            default:
+                request.setAttribute("message", "Please select action!");
+                dispatcher = request.getRequestDispatcher("province/deleteForm.jsp");
+        }
         dispatcher.forward(request, response);
     }
 
     private void addNewProvince(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        int provinceID = Integer.parseInt(request.getParameter("provinceID"));
         String provinceName = request.getParameter("provinceName");
         String provinceCode = request.getParameter("provinceCode");
-        Province province = new Province(provinceID, provinceName, provinceCode);
-        provinceDAO.add(province);
-        List<Province> listProvince = provinceDAO.findAll();
-        request.setAttribute("listProvince", listProvince);
-        RequestDispatcher dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
+        List<Province> provinces = provinceDAO.findAll();
+        RequestDispatcher dispatcher;
+        if (provinceDAO.checkProvinceName(provinceName, provinces) || provinceDAO.checkProvinceCode(provinceCode, provinces)) {
+            if (provinceDAO.checkProvinceName(provinceName, provinces)) {
+                request.setAttribute("existedName", "This province is existed!");
+                request.setAttribute("provinceName", provinceName);
+            }
+            if (provinceDAO.checkProvinceCode(provinceCode, provinces)) {
+                request.setAttribute("existedCode", "This code is existed!");
+                request.setAttribute("provinceCode", provinceCode);
+            }
+            dispatcher = request.getRequestDispatcher("province/add.jsp");
+        } else {
+            Province province = new Province(provinceName, provinceCode);
+            provinceDAO.add(province);
+            List<Province> listProvince = provinceDAO.findAll();
+            request.setAttribute("listProvince", listProvince);
+            request.setAttribute("message", "A new province is added!");
+            dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
+        }
         dispatcher.forward(request, response);
     }
 
@@ -121,21 +171,55 @@ public class ProvinceServlet extends HttpServlet {
         int provinceID = Integer.parseInt(request.getParameter("provinceID"));
         String provinceName = request.getParameter("provinceName");
         String provinceCode = request.getParameter("provinceCode");
-        Province province = new Province(provinceID, provinceName, provinceCode);
-        provinceDAO.update(province);
+        Province province = provinceDAO.selectById(provinceID);
+        List<Province> provinces = provinceDAO.listAfterDelete(provinceID);
+        RequestDispatcher dispatcher;
+        if (provinceDAO.checkProvinceName(provinceName, provinces) && provinceDAO.checkProvinceCode(provinceCode, provinces)) {
+            if (provinceDAO.checkProvinceName(provinceName, provinces)) {
+                request.setAttribute("existedName", "This province is existed!");
+                request.setAttribute("province", province);
+            }
+            if (provinceDAO.checkProvinceCode(provinceCode, provinces)) {
+                request.setAttribute("existedCode", "This code is existed!");
+                request.setAttribute("province", province);
+            }
+            dispatcher = request.getRequestDispatcher("province/update.jsp");
+        } else {
+            Province newProvince = new Province(provinceID, provinceName, provinceCode);
+            provinceDAO.update(newProvince);
+            List<Province> listProvince = provinceDAO.findAll();
+            request.setAttribute("listProvince", listProvince);
+            request.setAttribute("message", "Information is updated!");
+            dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
+        }
+        dispatcher.forward(request, response);
+    }
+
+    private void updateCustomersAndDeleteProvince(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException, ServletException {
+        int currentProvinceID = Integer.parseInt(request.getParameter("currentProvinceID"));
+        int newProvinceID = Integer.parseInt(request.getParameter("newProvinceID"));
+        customerDAO.updateCustomerByProvince(currentProvinceID, newProvinceID);
+        Province province = provinceDAO.selectById(currentProvinceID);
+        provinceDAO.delete(province);
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);
+        String message = "Province '" + province.getProvinceName() + "' was deleted";
+        request.setAttribute("message", message);
         RequestDispatcher dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
         dispatcher.forward(request, response);
     }
 
-    private void deleteProvince(HttpServletRequest request, HttpServletResponse response)
+    private void deleteCustomersAndDeleteProvince(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
         int provinceID = Integer.parseInt(request.getParameter("provinceID"));
+        customerDAO.deleteCustomerByProvince(provinceID);
         Province province = provinceDAO.selectById(provinceID);
         provinceDAO.delete(province);
         List<Province> listProvince = provinceDAO.findAll();
         request.setAttribute("listProvince", listProvince);
+        String message = "Province '" + province.getProvinceName() + "' and all related customers were deleted";
+        request.setAttribute("message", message);
         RequestDispatcher dispatcher = request.getRequestDispatcher("province/listProvince.jsp");
         dispatcher.forward(request, response);
     }

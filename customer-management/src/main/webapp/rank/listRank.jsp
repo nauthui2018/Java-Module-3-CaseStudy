@@ -171,7 +171,8 @@
                         <div class="col-sm-12">
                             <div class="au-breadcrumb-content">
                                 <div class="au-breadcrumb-left">
-                                    <span class="au-breadcrumb-span" style="font-size: larger">All Ranks</span>
+                                    <a class="btn btn-primary btn-sm" href="/ranks?action=add">
+                                        <i class="zmdi zmdi-plus mr-1"></i>New Rank</a>
                                 </div>
                                 <c:if test='${requestScope["message"] != null}'>
                                     <div class="alert alert-success alert-dismissible mt-3">
@@ -179,9 +180,6 @@
                                         <strong>Success!</strong> ${requestScope["message"]}
                                     </div>
                                 </c:if>
-                                <a class="btn btn-primary btn-sm" href="/ranks?action=add">
-                                <i class="zmdi zmdi-plus"></i> New Rank</a>
-
                             </div>
                         </div>
                     </div>
@@ -212,7 +210,7 @@
                                             <td>${rank.rankName}</td>
                                             <td>
                                                 <a href="/ranks?action=update&rankID=${rank.rankID}"><i class="zmdi zmdi-edit" style="color: green" title="Edit"></i></a>
-                                                <a href="/ranks?action=delete&rankID=${rank.rankID}"><i class="zmdi zmdi-delete ml-3" style="color: red" title="Delete"></i></a>
+                                                <a href="/ranks?action=showDeleteForm&rankID=${rank.rankID}"><i class="zmdi zmdi-delete ml-3" style="color: red" title="Delete"></i></a>
                                             </td>
                                         </tr>
                                     </c:forEach>

@@ -132,10 +132,10 @@
             </div>
             <div class="menu-sidebar2__content js-scrollbar2">
                 <ul class="list-unstyled navbar__list">
-                    <li class="active has-sub">
+                    <li class="has-sub">
                         <a href="/customers"/><i class="fas fa-table"></i>Customers</a>
                     </li>
-                    <li class="has-sub">
+                    <li class="active has-sub">
                         <a href="/provinces"/><i class="fas fa-table"></i>Provinces</a>
                     </li>
                     <li class="has-sub">
@@ -169,7 +169,8 @@
                         <div class="col-sm-12">
                             <div class="au-breadcrumb-content">
                                 <div class="au-breadcrumb-left">
-                                    <a href="/provinces">All Provinces</a>
+                                    <a class="btn btn-primary btn-sm" href="/provinces?action=add">
+                                        <i class="zmdi zmdi-plus mr-1"></i>New Province</a>
                                 </div>
                                 <c:if test='${requestScope["message"] != null}'>
                                     <div class="alert alert-success alert-dismissible mt-3">
@@ -177,9 +178,6 @@
                                         <strong>Success!</strong> ${requestScope["message"]}
                                     </div>
                                 </c:if>
-                                <a class="btn btn-primary btn-sm" href="/provinces?action=add">
-                                <i class="zmdi zmdi-plus"></i> New Province</a>
-
                             </div>
                         </div>
                     </div>
@@ -212,7 +210,7 @@
                                             <td>${province.provinceCode}</td>
                                             <td>
                                                 <a href="/provinces?action=update&provinceID=${province.provinceID}"><i class="zmdi zmdi-edit ml-2" style="color: green" title="Edit"></i></a>
-                                                <a href="/provinces?action=delete&provinceID=${province.provinceID}"><i class="zmdi zmdi-delete ml-2" style="color: red" title="Delete"></i></a>
+                                                <a href="/provinces?action=showDeleteForm&provinceID=${province.provinceID}"><i class="zmdi zmdi-delete ml-2" style="color: red" title="Delete"></i></a>
                                             </td>
                                         </tr>
                                     </c:forEach>

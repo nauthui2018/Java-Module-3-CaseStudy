@@ -10,7 +10,7 @@ public class HelperDAO {
     private String jdbcUsername = "root";
     private String jdbcPassword = "samthui7";
 
-
+    //consider using ResourcesHelper to get config from file
     public Connection getConnection() {
         connection = null;
         try {

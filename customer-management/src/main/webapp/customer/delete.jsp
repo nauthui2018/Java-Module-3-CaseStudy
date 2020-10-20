@@ -211,10 +211,9 @@
                         <div class="col-sm-12">
                             <div class="au-breadcrumb-content">
                                 <div class="au-breadcrumb-left">
-                                    <span class="au-breadcrumb-span" style="font-size: larger">Deleting customer</span>
+                                    <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customers">
+                                        <i class="fas fa-undo mr-1"></i>Back to Dashboard</a>
                                 </div>
-                                <a class="btn btn-primary btn-sm" href="${pageContext.request.contextPath}/customers">
-                                    <i class="fas fa-undo"></i> Back to Dashboard  </a>
                             </div>
                         </div>
                     </div>
@@ -333,10 +332,10 @@
                                         </div>
                                         <div class="row form-group">
                                             <div class="col-12"  align="right">
-                                                <a type="cancel" class="btn btn-warning btn-sm" href="${pageContext.request.contextPath}/customers">
-                                                    <i class="fa fa-window-close"></i> Cancel</a>
-                                                <button type="submit" class="btn btn-danger btn-sm" style="color: white" >
-                                                    <i class="fas fa-trash-alt"></i> Delete</button>
+                                                <a type="reset" class="btn btn-warning btn-sm" href="/customers" style="width: 90px">
+                                                    <i class="fa fa-ban mr-1"></i>Reset</a>
+                                                <button type="submit" class="btn btn-primary btn-sm" style="width: 90px; color: black">
+                                                    <i class="fas fa-save mr-1"></i>Save</button>
                                             </div>
                                         </div>
                                     </form>

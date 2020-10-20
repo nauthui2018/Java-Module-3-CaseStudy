@@ -11,6 +11,11 @@ public class Province {
     public Province() {
     }
 
+    public Province(String provinceName, String provinceCode) {
+        this.provinceName = provinceName;
+        this.provinceCode = provinceCode;
+    }
+
     public Province(int provinceID, String provinceName, String provinceCode) {
         this.provinceID = provinceID;
         this.provinceName = provinceName;

@@ -1,6 +1,7 @@
 package dao;
 
 import model.Rank;
+import model.User;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -60,7 +61,7 @@ public class RankDAO implements BaseDAO<Rank> {
     @Override
     public boolean update(Rank rank) {
         boolean rowUpdated = false;
-        String query = "{CALL update_rank(?,?,?)}";
+        String query = "{CALL update_rank(?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
             callableStatement.setInt(1, rank.getRankID());
@@ -90,5 +91,35 @@ public class RankDAO implements BaseDAO<Rank> {
             helper.printSQLException(e);
         }
         return rank;
+    }
+
+    public List<Rank> listAfterDelete(int id) {
+        String query = "{CALL get_remain_ranks(?)}";
+        List<Rank> ranks = new ArrayList<>();
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            callableStatement.setInt(1, id);
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int rankID = rs.getInt("rankID");
+                String rankName = rs.getString("rankName");
+                ranks.add(new Rank(rankID, rankName));
+            }
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return ranks;
+    }
+
+    public boolean checkRankName(String rankName) {
+        List<Rank> ranks = findAll();
+        boolean isExisted = false;
+        for (Rank item: ranks) {
+            if (item.getRankName().equals(rankName)) {
+                isExisted = true;
+                break;
+            }
+        }
+        return isExisted;
     }
 }

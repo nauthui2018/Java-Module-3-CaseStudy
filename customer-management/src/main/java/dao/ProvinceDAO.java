@@ -1,6 +1,7 @@
 package dao;
 
 import model.Province;
+import model.Rank;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -94,5 +95,46 @@ public class ProvinceDAO implements BaseDAO<Province> {
             helper.printSQLException(e);
         }
         return province;
+    }
+
+    public List<Province> listAfterDelete(int id) {
+        String query = "{CALL get_remain_provinces(?)}";
+        List<Province> provinces = new ArrayList<>();
+        try (Connection connection = helper.getConnection();
+             CallableStatement callableStatement = connection.prepareCall(query);) {
+            callableStatement.setInt(1, id);
+            ResultSet rs = callableStatement.executeQuery();
+            while (rs.next()) {
+                int provinceID = rs.getInt("provinceID");
+                String provinceName = rs.getString("provinceName");
+                String provinceCode = rs.getString("provinceCode");
+                provinces.add(new Province(provinceID, provinceName, provinceCode));
+            }
+        } catch (SQLException e) {
+            helper.printSQLException(e);
+        }
+        return provinces;
+    }
+
+    public boolean checkProvinceName(String provinceName, List<Province> provinces) {
+        boolean isExisted = false;
+        for (Province item: provinces) {
+            if (item.getProvinceName().equals(provinceName)) {
+                isExisted = true;
+                break;
+            }
+        }
+        return isExisted;
+    }
+
+    public boolean checkProvinceCode(String provinceCode, List<Province> provinces) {
+        boolean isExisted = false;
+        for (Province item: provinces) {
+            if (item.getProvinceCode().equals(provinceCode)) {
+                isExisted = true;
+                break;
+            }
+        }
+        return isExisted;
     }
 }
