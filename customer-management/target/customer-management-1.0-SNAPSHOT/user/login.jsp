@@ -59,16 +59,21 @@
                             <div class="form-group">
                                 <label>Username</label>
                                 <input value="${requestScope["userUsername"]}" class="au-input au-input--full" type="text" name="userUsername" placeholder="Username" required>
+                                <label class="ml-2 mt-2">
+                                    <c:if test="${requestScope['incorrectName'] != null}">
+                                        <span class="message" style="color: red; font-size: smaller">${requestScope["incorrectName"]}</span>
+                                    </c:if>
+                                </label>
                             </div>
                             <div class="form-group">
                                 <label>Password</label>
                                 <input value="${requestScope["userPassword"]}" class="au-input au-input--full" type="password" name="userPassword" placeholder="Password" required>
+                                <label class="ml-2 mt-2">
+                                    <c:if test='${requestScope["incorrectPass"] != null}'>
+                                        <span class="message" style="color: red; font-size: smaller">${requestScope["incorrectPass"]}</span>
+                                    </c:if>
+                                </label>
                             </div>
-                            <label class="message">
-                                <c:if test='${requestScope["message"] != null}'>
-                                    <span class="message" style="color: red; font-size: smaller">${requestScope["message"]}</span>
-                                </c:if>
-                            </label>
 <%--                            <div class="login-checkbox">--%>
 <%--                                <label>--%>
 <%--                                    <input type="checkbox" name="remember">Remember Me--%>

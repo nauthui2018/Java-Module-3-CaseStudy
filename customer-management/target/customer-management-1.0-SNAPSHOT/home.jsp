@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,6 +40,9 @@
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">Menu<i class="fas fa-bars ml-1"></i></button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
+                <c:if test="${user.isUserAdmin()}">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/customers">Dashboard</a></li>
+                </c:if>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">About Us</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
                 <li class="nav-item">
@@ -47,7 +52,8 @@
                     </form>
                 </li>
                 <li  class="nav-item">
-                    <a href="/users?action=view">${requestScope["userUsername"]}</a>
+<%--                    <a href="/users?action=view">${user.userUsername}</a>--%>
+                    <a class="btn" href="/users?action=view" style="color: white; padding: 0">${user.userUsername}</a>
                 </li>
                 <li  class="nav-item">
                     <a class="btn" href="/users?action=${requestScope["actionName"]}" style="color: white; padding: 0">${requestScope["buttonName"]}

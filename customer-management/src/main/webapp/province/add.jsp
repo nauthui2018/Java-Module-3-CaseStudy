@@ -236,8 +236,12 @@
                                                 <label for="text-input" class="form-control-label">Province Name</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="text-input" name="provinceName" placeholder="Province Name" class="form-control">
-                                                <small class="form-text text-muted">Please enter province name</small>
+                                                <input type="text" id="text-input" name="provinceName" placeholder="Province Name" value="${requestScope["provinceName"]}" class="form-control">
+                                                <label>
+                                                    <c:if test='${requestScope["existedName"] != null}'>
+                                                        <span class="message" style="color: red; font-size: smaller">${requestScope["existedName"]}</span>
+                                                    </c:if>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="row form-group">
@@ -245,8 +249,12 @@
                                                 <label for="text-input" class=" form-control-label">Province Code</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input type="text" id="text-input" name="provinceCode" placeholder="Province Code" class="form-control">
-                                                <small class="help-block form-text">Please enter province code</small>
+                                                <input type="text" name="provinceCode" placeholder="Province Code" value="${requestScope["provinceCode"]}" class="form-control">
+                                                <label>
+                                                    <c:if test='${requestScope["existedCode"] != null}'>
+                                                        <span class="message" style="color: red; font-size: smaller">${requestScope["existedCode"]}</span>
+                                                    </c:if>
+                                                </label>
                                             </div>
                                         </div>
                                         <div class="row form-group">

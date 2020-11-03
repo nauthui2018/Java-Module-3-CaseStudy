@@ -269,7 +269,7 @@
                                                 <label for="text-input" class=" form-control-label">New Code</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                <input  value="${province.getProvinceCode()}" type="text" id="text-input" name="provinceCode" placeholder="Province Code" class="form-control">
+                                                <input value="${province.getProvinceCode()}" type="text" id="text-input" name="provinceCode" placeholder="Province Code" class="form-control">
                                                 <label>
                                                     <c:if test='${requestScope["existedCode"] != null}'>
                                                         <span class="message" style="color: red; font-size: smaller">${requestScope["existedCode"]}</span>

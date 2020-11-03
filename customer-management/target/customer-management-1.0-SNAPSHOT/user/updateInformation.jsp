@@ -18,7 +18,7 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Register</title>
+    <title>Update Information</title>
 
     <!-- Fontfaces CSS-->
     <link href="<c:url value="/css/font-face.css"/>" rel="stylesheet" media="all">
@@ -78,10 +78,12 @@
                                 </div>
                                 <div class="col-12 col-sm-9">
                                     <select name="gender" required>
-                                        <c:if test="${customer.isGender()}">
-                                            <option value="${customer.isGender()}" selected>${customer.viewGender()}</option>
-                                        </c:if>
-                                        <option value="${customer.isGender()}">${customer.viewGender()}</option>
+                                        <option value="${customer.gender}" selected>${customer.viewGender(customer.gender)}</option>
+                                        <c:forEach var = "i" begin = "0" end = "2">
+                                            <c:if test="${customer.gender != i}">
+                                                <option value="${i}">${customer.viewGender(i)}</option>
+                                            </c:if>
+                                        </c:forEach>
                                     </select>
                                 </div>
                             </div>

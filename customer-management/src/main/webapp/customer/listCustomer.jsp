@@ -202,16 +202,19 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="au-breadcrumb-content">
-                                <div class="au-breadcrumb-left">
+                                <div class="au-breadcrumb-left mt-1">
                                     <a class="btn btn-primary btn-sm" href="/customers?action=add">
                                         <i class="zmdi zmdi-plus mr-1"></i>New Customer</a>
                                 </div>
                                 <c:if test='${requestScope["message"] != null}'>
-                                    <div class="alert alert-success alert-dismissible mt-3">
-                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <div class="alert alert-dismissible m-b-0" style="color: green">
+                                        <a href="#" class="btn close" data-dismiss="alert" aria-label="close" style="color: green">&times;</a>
                                         <strong>Success!</strong> ${requestScope["message"]}
                                     </div>
                                 </c:if>
+                                <div class="au-breadcrumb-right m-b-10">
+                                    <a class="btn btn-primary btn-sm" href="/users?action=''">Home page</a>
+                                </div>
                             </div>
                         </div>
                     </div>

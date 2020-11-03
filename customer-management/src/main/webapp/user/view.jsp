@@ -49,95 +49,67 @@
         <div class="container">
             <div class="login-wrap">
                 <div class="login-content">
-                    <div class="login-logo">
+                    <div class="login-logo m-b-20">
                         <a href="#">
                             <img src="/images/icon/logo.png" alt="CoolAdmin">
                         </a>
                     </div>
-                    <div class="login-form">
-                        <form action="${requestScope["action"]}">
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">Username</label>
+                    <div class="col-md-12">
+                        <!-- DATA TABLE-->
+                                <div class="table-responsive table--no-card m-b-20">
+                                    <table class="table table-borderless table-striped table-earning">
+                                        <tbody>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0; width: 30%">Username:</td>
+                                            <td class="text-left">${user.userUsername}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0">Full Name:</td>
+                                            <td class="text-left">${customer.firstName} ${customer.lastName}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0">Gender:</td>
+                                            <td class="text-left">${customer.viewGender(customer.gender)}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0">DOB:</td>
+                                            <td class="text-left">${customer.dob}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0">Mobile:</td>
+                                            <td class="text-left">${customer.mobile}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0">Address:</td>
+                                            <td class="text-left">${customer.address}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0">Email:</td>
+                                            <td class="text-left">${customer.email}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0">Province:</td>
+                                            <td class="text-left">${province.provinceName}</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right" style="padding-right: 0">Rank:</td>
+                                            <td class="text-left">${rank.rankName}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${user.userUsername}" class="form-control" name="userUsername" disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">Full Name</label>
-                                </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${customer.firstName} ${customer.lastName}" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">Gender</label>
-                                </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${customer.viewGender()}" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">DOB</label>
-                                </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${customer.dob}" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">Mobile</label>
-                                </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${customer.mobile}" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">Address</label>
-                                </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${customer.address}" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">Province</label>
-                                </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${province.provinceName}" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">Email</label>
-                                </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${customer.email}" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <div class="row form-group">
-                                <div class="col col-sm-3">
-                                    <label class="form-control-label">Rank</label>
-                                </div>
-                                <div class="col-12 col-sm-9">
-                                    <input value="${rank.rankName}" class="form-control" disabled>
-                                </div>
-                            </div>
-                            <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">DONE</button>
-                        </form>
-                        <div class="login-link">
-                            <p style="text-align: center">
-                                <a href="${pageContext.request.contextPath}/users?action=updateInformation" class="ml-3">Update Information</a>
-                            </p>
-                            <p style="text-align: center">
-                                <a href="${pageContext.request.contextPath}/users?action=updatePassword" class="ml-3">Change Password</a>
-                            </p>
-                        </div>
+                        <!-- END DATA TABLE-->
+                    </div>
+                    <div class="col-md-12" style="text-align: center">
+                        <a href="#" onclick="window.history.back()" style="align-items: center">
+                            <button class="au-btn au-btn--block au-btn--green" style="width: 300px">DONE</button>
+                        </a>
+                    </div>
+                    <div class="col-md-12 mt-2" style="text-align: center">
+                        <a href="${pageContext.request.contextPath}/users?action=updateInformation">Update Information</a>
+                    </div>
+                    <div class="col-md-12 mt-1" style="text-align: center">
+                        <a href="${pageContext.request.contextPath}/users?action=updatePassword">Change Password</a>
                     </div>
                 </div>
             </div>

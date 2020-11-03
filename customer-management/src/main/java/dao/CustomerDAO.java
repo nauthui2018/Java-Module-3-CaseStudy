@@ -279,7 +279,7 @@ public class CustomerDAO implements ICustomerDAO {
     @Override
     public boolean updateCustomerByRank(int currentID, int newID) {
         boolean rowUpdated = false;
-        String query = "{CALL update_customer_by_rank(?,?)}";
+        String query = "{CALL update_rank_of_customer(?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
             callableStatement.setInt(1, currentID);
@@ -310,7 +310,7 @@ public class CustomerDAO implements ICustomerDAO {
     @Override
     public boolean updateCustomerByProvince(int currentID, int newID) {
         boolean rowUpdated = false;
-        String query = "{CALL update_customer_by_province(?,?)}";
+        String query = "{CALL update_province_of_customer(?,?)}";
         try (Connection connection = helper.getConnection();
              CallableStatement callableStatement = connection.prepareCall(query);) {
             callableStatement.setInt(1, currentID);
